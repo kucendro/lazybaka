@@ -1,0 +1,20 @@
+pre-commit:
+  parallel: true
+  jobs:
+    - name: rustfmt
+      glob: "*.rs"
+      run: cargo fmt --all
+      stage_fixed: true
+    - name: nixfmt
+      glob: "*.nix"
+      run: nixfmt {staged_files}
+      stage_fixed: true
+
+pre-push:
+  jobs:
+    - name: fmt
+      run: cargo fmt --all --check
+    - name: clippy
+      run: cargo clippy --all-targets -- -D warnings
+    - name: test
+      run: cargo test

@@ -1,0 +1,2997 @@
+
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta id="bkViewport" name="viewport" content="width=device-width" />
+
+    <title>Bakaláři - Rozvrh</title>
+
+    <link rel="icon" type="image/x-icon" href="/bakaweb/next/images/favicon.ico">
+
+    <!--JQuery UI-->
+    <link href="/bakaweb/next/css/jquery-ui.bundle.min.css?v=20260826" rel="stylesheet" />
+    <!-- Bootstrap -->
+    <link href="/bakaweb/next/css/bootstrap.min.css" rel="stylesheet" />
+    <!--Fonts-->
+    <link href="/bakaweb/next/icons/bakalari.webicons.bundle.min.css?v=20260826" rel="stylesheet" />
+    <!--JQuery-->
+    <script type="text/javascript" src="/bakaweb/next/js/bundles/jquery.bundle.min.js?v=20260826"></script>
+    <!--JSBootstrap-->
+    <script type="text/javascript" src="/bakaweb/next/js/bundles/bootstrap.bundle.min.js?v=20260826"></script>
+    <!-- CookieConsent -->
+    <script type="text/javascript" src="/bakaweb/next/js/bundles/cookieconsent.bundle.js?v=20260826" defer></script>
+
+    <!-- Resolving name collision between jQuery UI and Twitter Bootstrap -->
+    <script>
+        $.widget.bridge('uitooltip', $.ui.tooltip);
+    </script>
+    <!-- Cldr -->
+    <!-- Globalize -->
+    <!-- A DevExtreme library -->
+    <!-- Tiny MCE/CK Editor -->
+    <!-- Localizationc -->
+    <!--App root for scripts-->
+    <script type="text/javascript">
+        var appRoot = "/bakaweb/";
+        var currentLangCode = "cs";
+        var loginUrl = "/bakaweb/login";
+    </script>
+    <!--Begin page specific -->
+    
+    <link href="/bakaweb/next/css/Timetable/styles.css?v=20260826" rel="stylesheet" />
+    <link href="/bakaweb/next/css/Timetable/styles_public.css?v=20260826" rel="stylesheet" />
+    <link href="/bakaweb/next/css/Timetable/styles_print.css?v=20260826" rel="stylesheet" media="print" />
+    <link rel="stylesheet" type="text/css" href="/bakaweb/next/css/bubble.css?v=20260826" />
+
+    
+    <script src="/bakaweb/next/js/bundles/thirdpartylibs.bundle.js?v=20260826"></script>
+    <script src="/bakaweb/next/js/bundles/bakalari.bundle.min.js?v=20260826"></script>
+    <script src="//cdn.jsdelivr.net/npm/jquery.marquee@1.5.0/jquery.marquee.min.js" type="text/javascript"></script>
+    <script src="/bakaweb/next/js/Timetable/TimetableCommon.js?v=20260826"></script>
+
+    <script type="text/javascript">
+        const objectType = 'Class';
+        const objectId = '2T';
+        const timetableQuery = '';
+
+        function changeClass() {
+            showTimetable('Class', $('#selectedClass').val());
+        }
+
+        function changeTeacher() {
+            showTimetable('Teacher', $('#selectedTeacher').val());
+        }
+
+        function changeRoom() {
+            showTimetable('Room', $('#selectedRoom').val());
+        }
+
+        function changeTerm() {
+            showTimetable(objectType, objectId);
+        }
+
+        function showTimetable(objectType, objectId) {
+            if (objectId) {
+                //var term = $('#selectedTerm').val();
+                var term = $('[name=options]:checked').val();
+                if (!term) {
+                    term = 'Permanent';
+                }
+                var href = appRoot + 'Timetable/Public/' + term + '/' + objectType + '/' + objectId + timetableQuery;
+                window.location.href = href;
+            }
+        }
+
+        /* Otevírání off-canvas menu podle obsahu */
+        function openCanvas(btn) {
+            if ($(btn).is('#teacher')) {
+                $('.btn-touch').removeClass('pressed');
+                $(btn).addClass('pressed');
+                $('#teacher_canvas').css({ 'width': 'auto', 'transform': 'scaleX(1)' });
+                $('.bk-canvas:not(#teacher_canvas)').css({ 'width': '0px', 'transform': 'scaleX(0)' });
+                var lm = $('#teacher_canvas').width();
+                $("#main").css('margin-left', lm);
+            }
+            if ($(btn).is('#class')) {
+                $('.btn-touch').removeClass('pressed');
+                $(btn).addClass('pressed');
+                $('#class_canvas').css({ 'width': 'auto', 'transform': 'scaleX(1)' });
+                $('.bk-canvas:not(#class_canvas)').css({ 'width': '0px', 'transform': 'scaleX(0)' });
+                var lm = $('#class_canvas').width();
+                $("#main").css('margin-left', lm);
+            }
+            if ($(btn).is('#room')) {
+                $('.btn-touch').removeClass('pressed');
+                $(btn).addClass('pressed');
+                $('#room_canvas').css({ 'width': 'auto', 'transform': 'scaleX(1)' });
+                $('.bk-canvas:not(#room_canvas)').css({ 'width': '0px', 'transform': 'scaleX(0)' });
+                var lm = $('#room_canvas').width();
+                $("#main").css('margin-left', lm);
+            }
+        }
+
+        /* Zavření canvasu */
+        function closeCanvas() {
+            $('.btn-touch').removeClass('pressed');
+            $(".bk-canvas").css({ 'width': '0px', 'transform': 'scaleX(0)' });
+            $("#main").css('margin-left', '0px');
+        }
+    </script>
+
+    
+<script id="atomTemplate" type="text/x-jsrender">
+    <span class="line mb-1">
+        <span class="bubble-label">Předmět:</span>
+        <span class="bubble-value">{{:subjecttext}}</span>
+    </span>
+    <div class="line mb-1">
+        <span class="bubble-label">Den:</span>
+        <span class="bubble-value">{{:day}}</span>
+    </div>
+    <div class="line mb-1">
+        <span class="bubble-label">Čas:</span>
+        <span class="bubble-value">{{:time}}</span>
+    </div>
+    {{if (group||""!="")}}
+    <span class="line mb-1">
+        <span class="bubble-label">Skupina:</span>
+        <span class="bubble-value">{{:group}}</span>
+    </span>
+    {{/if}}
+    {{if (room || "" != "")}}
+    <span class="line mb-1">
+        <span class="bubble-label">M&#237;stnost:</span>
+        <span class="bubble-value">{{:room}}</span>
+    </span>
+    {{/if}}
+    {{if (teacher||""!="")}}
+    <span class="line mb-1">
+        <span class="bubble-label">Učitel:</span>
+        <span class="bubble-value">{{:teacher}}</span>
+    </span>
+    {{/if}}
+    {{if (theme||""!="")}}
+    <span class="line mb-1">
+        <span class="bubble-label">T&#233;ma:</span>
+        <span class="bubble-value">{{:theme}}</span>
+    </span>
+    {{/if}}
+    {{if (notice||""!="")}}
+    <span class="line mb-1">
+        <span class="bubble-label">Pozn&#225;mka:</span>
+        <span class="bubble-value">{{:notice}}</span>
+    </span>
+    {{/if}}
+    {{if (withAssistance)}}
+    <span class="line mb-1">
+        <span class="bubble-label">Asistence:</span>
+        <span class="bubble-value d-table-row">
+            <i class="ico20-rozvrh-rukaRovneR bk-font-20 pl-1 d-inline-flex align-middle" style="transform: scaleX(-1);"></i>
+            <span class="d-table-cell">
+                {{if (assistancePrev||""!="")}}
+                <!--Asistence suplování - přeškrtnutý původní asistent:-->
+                <span class="line text-nowrap">
+                    <span class="bubble-value disabled"><s>{{:assistancePrev}}</s></span>
+                </span>
+                {{/if}}
+                {{if (assistance||""!="")}}
+                <!--Asistence:-->
+                <span class="line text-nowrap">
+                    <span class="bubble-value pb-1">{{:assistance}}</span>
+                </span>
+                {{/if}}
+            </span>
+        </span>
+    </span>
+    {{/if}}
+    {{if IsLastRoomLesson}}
+    <span class="line mb-1">
+        <span class="bubble-label">Zamknout:</span>
+        <span class="bubble-value d-table-row"><i class="ico20-tridniKniha-klic bk-font-20 mr-1 align-middle"></i>Posledn&#237; hodina v m&#237;stnosti</span>
+    </span>
+    {{/if}}
+    {{if (changeinfo)}}
+    <span class="line mb-1">
+        <span class="bubble-label">Změna:</span>
+        <span class="bubble-value d-table-row"><i class="changeBadge mr-1 {{:infoChangeCode}}">{{:changeBadgeChar}}</i>{{:changeinfo}}</span>
+    </span>
+    {{/if}}
+    {{if (homeworks && homeworks.length != 0)}}
+    <span class="line mb-1">
+        <span class="bubble-label">Dom&#225;c&#237; &#250;kol:</span>
+        <span class="bubble-homeworks-wrapper d-table-row">
+            <i class="homeworkIco mr-1 d-inline-flex justify-content-center align-items-center">U</i>
+            <span class="d-table-cell">
+                {{for homeworks}}
+                    <span class="d-inline-flex">
+                        <span class="bubble-value homework">{{:Content}}</span>
+                    </span>
+                {{/for}}
+            </span>
+        </span>
+
+    </span>
+    {{/if}}
+    {{if (HasPlannedClassification)}}
+    <span class="line mb-1">
+        <span class="bubble-label">Klasifikace:</span>
+        <span class="bubble-value d-table-row">
+            <i class="plannedClassificationIco mr-1 d-inline-flex justify-content-center align-items-center">K</i>
+            {{:PlannedClassificationCaption}}
+        </span>
+    </span>
+    {{/if}}
+    {{if (absencetext)}}
+    <span class="line mb-1">
+        <span class="bubble-label">Doch&#225;zka:</span>
+        <span class="bubble-value d-table-row"><i class="absenceTypeIcon {{:absenceType}}"></i>{{:absencetext}}</span>
+    </span>
+    {{/if}}
+    {{if (hasAbsent && absentInfoText)}}
+    <span class="line">
+        <span class="bubble-label">Absence:</span>
+        <span class="bubble-value">{{:absentInfoText}}</span>
+    </span>
+    {{/if}}
+</script>
+
+<script id="absentTemplate" type="text/x-jsrender">
+    <div class="line mb-1">
+        <span class="bubble-label">Den:</span>
+        <span class="bubble-value">{{:day}}</span>
+    </div>
+    <div class="line mb-1">
+        <span class="bubble-label">Čas:</span>
+        <span class="bubble-value">{{:time}}</span>
+    </div>
+    {{if (notice||""!="")}}
+    <span class="line mb-1">
+        <span class="bubble-label">Pozn&#225;mka:</span>
+        <span class="bubble-value">{{:notice}}</span>
+    </span>
+    {{/if}}
+    {{if (removedinfo)}}
+    <span class="line">
+        <span class="bubble-label">
+            {{if (isSupervision)}}Změna{{else}}Absence{{/if}}:
+        </span>
+        <span class="bubble-value">{{:removedinfo}}</span>
+    </span>
+    {{/if}}
+    {{if (AbsentInfo||""!="")}}
+    <span class="line mb-1">
+        <span class="bubble-label">Informace:</span>
+        <span class="bubble-value">{{:AbsentInfo}}</span>
+    </span>
+    {{/if}}
+</script>
+
+<script id="removedTemplate" type="text/x-jsrender">
+    <div class="line mb-1">
+        <span class="bubble-label">Den:</span>
+        <span class="bubble-value">{{:day}}</span>
+    </div>
+    <div class="line mb-1">
+        <span class="bubble-label">Čas:</span>
+        <span class="bubble-value">{{:time}}</span>
+    </div>
+    {{if (notice||""!="")}}
+    <span class="line mb-1">
+        <span class="bubble-label">Pozn&#225;mka:</span>
+        <span class="bubble-value">{{:notice}}</span>
+    </span>
+    {{/if}}
+    {{if (absentinfo)}}
+    <span class="line mb-1">
+        <span class="bubble-label">Informace:</span>
+        <span class="bubble-value">{{:absentinfo}}</span>
+    </span>
+    {{/if}}
+    {{if (removedinfo)}}
+    <span class="line">
+        <span class="bubble-label">Informace:</span>
+        <span class="bubble-value">{{:removedinfo}}</span>
+    </span>
+    {{/if}}
+</script>
+
+<script id="guardTemplate" type="text/x-jsrender">
+    <div class="line guard mb-1">
+        <span class="bubble-label">Dozor:</span>
+        <span class="bubble-value">{{:name}}</span>
+    </div>
+    {{if (info)}}
+    <div class="line guard mb-1">
+        <span class="bubble-label">Informace:</span>
+        <span class="bubble-value">{{:info}}</span>
+    </div>
+    {{/if}}
+    <div class="line guard mb-1">
+        <span class="bubble-label">Den:</span>
+        <span class="bubble-value">{{:day}}</span>
+    </div>
+    {{if (end && begin)}}
+    <div class="line guard">
+        <span class="bubble-label">Čas:</span>
+        <span class="bubble-value">{{:begin}} - {{:end}}</span>
+    </div>
+    {{/if}}
+</script>
+
+    <!--End page specific -->
+
+        <!--Google Analytics-->
+        <script async type="text/plain" data-cookiecategory="analytics" src="https://www.googletagmanager.com/gtag/js?id=G-JJ74ZPC651"></script>
+        <script type="text/plain" data-cookiecategory="analytics">
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('set', {"user_id":"5918","dimension1":"none","dimension2":"2.2.826.2","dimension3":"5918","app_version":"2.2.826.2","app_name":"cz.bakalari.web","user_properties":{"user_type":"none","app_version":"2.2.826.2","evnumber":"5918"},"page_path":"/Timetable/Public/ActualClass"});
+        gtag('config', 'G-JJ74ZPC651');
+        </script>
+        <!-- End Google Analytics -->
+    
+    <script type="text/javascript">
+        $(function () {
+            var element = $("#bkViewport");
+            if (screen.width < 640) {
+                element.attr("content", "width=500");
+            }
+            if ((window.matchMedia("(orientation: landscape)").matches && screen.height < 640) || (window.matchMedia("(orientation: landscape)").matches && screen.width < 640)) {
+                element.attr("content", "width=750, initial-scale=0.75");
+            }
+        });
+    </script>
+
+</head>
+
+<body>
+    
+
+
+
+
+    <div class="bk-timetable-body">
+        <div class="container-fluid bk-timetable-header">
+                <div class="d-flex">
+                    <div class="w-100">
+                            <div class="bk-header-caption">Středn&#237; průmyslov&#225; škola elektrotechnick&#225; a Vyšš&#237; odborn&#225; škola Pardubice</div>
+
+                            <div class="bk-timetable-selects row mb-1 mt-1">
+                                    <div class="d-inline-flex m-1 mr-2 position-relative ico32-ovladani-smerovkaDolu">
+                                        <span class="bk-timetable-label pl-0">Tř&#237;da</span>
+                                        <select id="selectedClass" class="custom-select" onchange="changeClass()">
+                                            <option></option>
+                                                <option value="3M"
+                                                        >
+                                                    1.A
+                                                </option>
+                                                <option value="3N"
+                                                        >
+                                                    1.B
+                                                </option>
+                                                <option value="3O"
+                                                        >
+                                                    1.D
+                                                </option>
+                                                <option value="3P"
+                                                        >
+                                                    1.E
+                                                </option>
+                                                <option value="3V"
+                                                        >
+                                                    1.EL
+                                                </option>
+                                                <option value="3W"
+                                                        >
+                                                    1.EM
+                                                </option>
+                                                <option value="3Q"
+                                                        >
+                                                    1.G
+                                                </option>
+                                                <option value="3R"
+                                                        >
+                                                    1.H
+                                                </option>
+                                                <option value="3S"
+                                                        >
+                                                    1.I
+                                                </option>
+                                                <option value="3T"
+                                                        >
+                                                    1.ME
+                                                </option>
+                                                <option value="3U"
+                                                        >
+                                                    1.PE
+                                                </option>
+                                                <option value="3X"
+                                                        >
+                                                    1.S
+                                                </option>
+                                                <option value="3Y"
+                                                        >
+                                                    1.SB
+                                                </option>
+                                                <option value="36"
+                                                        >
+                                                    2.A
+                                                </option>
+                                                <option value="37"
+                                                        >
+                                                    2.B
+                                                </option>
+                                                <option value="39"
+                                                        >
+                                                    2.D
+                                                </option>
+                                                <option value="3A"
+                                                        >
+                                                    2.E
+                                                </option>
+                                                <option value="3G"
+                                                        >
+                                                    2.EL
+                                                </option>
+                                                <option value="3I"
+                                                        >
+                                                    2.EM
+                                                </option>
+                                                <option value="3B"
+                                                        >
+                                                    2.G
+                                                </option>
+                                                <option value="3C"
+                                                        >
+                                                    2.H
+                                                </option>
+                                                <option value="3D"
+                                                        >
+                                                    2.I
+                                                </option>
+                                                <option value="3E"
+                                                        >
+                                                    2.ME
+                                                </option>
+                                                <option value="3F"
+                                                        >
+                                                    2.PE
+                                                </option>
+                                                <option value="3J"
+                                                        >
+                                                    2.S
+                                                </option>
+                                                <option value="2R"
+                                                        >
+                                                    3.A
+                                                </option>
+                                                <option value="2S"
+                                                        >
+                                                    3.B
+                                                </option>
+                                                <option value="2T"
+                                                          selected="selected"
+>
+                                                    3.D
+                                                </option>
+                                                <option value="2U"
+                                                        >
+                                                    3.E
+                                                </option>
+                                                <option value="31"
+                                                        >
+                                                    3.EL
+                                                </option>
+                                                <option value="32"
+                                                        >
+                                                    3.EM
+                                                </option>
+                                                <option value="2V"
+                                                        >
+                                                    3.G
+                                                </option>
+                                                <option value="2W"
+                                                        >
+                                                    3.H
+                                                </option>
+                                                <option value="2X"
+                                                        >
+                                                    3.I
+                                                </option>
+                                                <option value="2Z"
+                                                        >
+                                                    3.ME
+                                                </option>
+                                                <option value="34"
+                                                        >
+                                                    3.S
+                                                </option>
+                                                <option value="33"
+                                                        >
+                                                    3.V
+                                                </option>
+                                                <option value="2B"
+                                                        >
+                                                    4.A
+                                                </option>
+                                                <option value="2C"
+                                                        >
+                                                    4.B
+                                                </option>
+                                                <option value="2D"
+                                                        >
+                                                    4.D
+                                                </option>
+                                                <option value="2E"
+                                                        >
+                                                    4.E
+                                                </option>
+                                                <option value="2F"
+                                                        >
+                                                    4.F
+                                                </option>
+                                                <option value="2G"
+                                                        >
+                                                    4.G
+                                                </option>
+                                                <option value="2I"
+                                                        >
+                                                    4.H
+                                                </option>
+                                                <option value="2J"
+                                                        >
+                                                    4.I
+                                                </option>
+                                                <option value="2K"
+                                                        >
+                                                    4.ME
+                                                </option>
+                                        </select>
+                                    </div>
+                                                                    <div class="d-inline-flex m-1 mr-2 position-relative ico32-ovladani-smerovkaDolu">
+                                        <span class="bk-timetable-label">Učitel</span>
+                                        <select id="selectedTeacher" class="custom-select" onchange="changeTeacher()">
+                                            <option></option>
+                                                <option value="UVORT"
+                                                        >
+                                                    Ad&#225;mek Libor
+                                                </option>
+                                                <option value="UZOSM"
+                                                        >
+                                                    Andrle Marcel
+                                                </option>
+                                                <option value="UQOQ4"
+                                                        >
+                                                    Bajer Libor
+                                                </option>
+                                                <option value="UZON6"
+                                                        >
+                                                    Bakl&#237;kov&#225; Ivona
+                                                </option>
+                                                <option value="UPOPC"
+                                                        >
+                                                    B&#225;rta Čestm&#237;r
+                                                </option>
+                                                <option value="UEMKE"
+                                                        >
+                                                    Bartel Jaroslav
+                                                </option>
+                                                <option value="UROQO"
+                                                        >
+                                                    Bartoš Petr
+                                                </option>
+                                                <option value="U0080"
+                                                        >
+                                                    Bednař&#237;kov&#225; Lea
+                                                </option>
+                                                <option value="UUORO"
+                                                        >
+                                                    Bouškov&#225; Pavl&#237;na
+                                                </option>
+                                                <option value="UXOS5"
+                                                        >
+                                                    Braun Martin
+                                                </option>
+                                                <option value="UJONA"
+                                                        >
+                                                    Bub&#225;k Petr
+                                                </option>
+                                                <option value="UXOS7"
+                                                        >
+                                                    Budina Martin
+                                                </option>
+                                                <option value="UY5HV"
+                                                        >
+                                                    Budina Petr
+                                                </option>
+                                                <option value="UZON1"
+                                                        >
+                                                    Budinov&#225; Eva
+                                                </option>
+                                                <option value="U0108"
+                                                        >
+                                                    Cach Zdeněk
+                                                </option>
+                                                <option value="USORB"
+                                                        >
+                                                    Cerman Luděk
+                                                </option>
+                                                <option value="UOONP"
+                                                        >
+                                                    Č&#225;p Pavel
+                                                </option>
+                                                <option value="UQOPV"
+                                                        >
+                                                    Čechlovsk&#225; Dagmar
+                                                </option>
+                                                <option value="U  52"
+                                                        >
+                                                    Černoch Milan
+                                                </option>
+                                                <option value="UZOSN"
+                                                        >
+                                                    Daleck&#225; Eva
+                                                </option>
+                                                <option value="UZOSP"
+                                                        >
+                                                    Dočkal Pavel
+                                                </option>
+                                                <option value="UOOP2"
+                                                        >
+                                                    Dus Ren&#233;
+                                                </option>
+                                                <option value="UQOPW"
+                                                        >
+                                                    Dvoř&#225;kov&#225; Jana
+                                                </option>
+                                                <option value="UWORZ"
+                                                        >
+                                                    Fereš Pavel
+                                                </option>
+                                                <option value="UTVCG"
+                                                        >
+                                                    Fišar Petr
+                                                </option>
+                                                <option value="UOONS"
+                                                        >
+                                                    Han&#225;kov&#225; Vladim&#237;ra
+                                                </option>
+                                                <option value="UZOMX"
+                                                        >
+                                                    Hejna Petr
+                                                </option>
+                                                <option value="USOQW"
+                                                        >
+                                                    Hrabaň V&#225;clav
+                                                </option>
+                                                <option value="UQOPX"
+                                                        >
+                                                    Hradsk&#253; Pavel
+                                                </option>
+                                                <option value="UOOO6"
+                                                        >
+                                                    Hrnč&#237;ř Petr
+                                                </option>
+                                                <option value="U  12"
+                                                        >
+                                                    Hron Vladim&#237;r
+                                                </option>
+                                                <option value="UOONR"
+                                                        >
+                                                    Hůlka Vladim&#237;r
+                                                </option>
+                                                <option value="UOOOC"
+                                                        >
+                                                    Hurda Jan
+                                                </option>
+                                                <option value="U0OSS"
+                                                        >
+                                                    Hušek Petr
+                                                </option>
+                                                <option value="UOONV"
+                                                        >
+                                                    Hypšmanov&#225; Dobromila
+                                                </option>
+                                                <option value="UQOQ3"
+                                                        >
+                                                    Chvojka Matěj
+                                                </option>
+                                                <option value="UYOSJ"
+                                                        >
+                                                    Janda Tom&#225;š
+                                                </option>
+                                                <option value="UQOPY"
+                                                        >
+                                                    Jedličkov&#225; Alena
+                                                </option>
+                                                <option value="UMVMU"
+                                                        >
+                                                    Jel&#237;nek Radek
+                                                </option>
+                                                <option value="UQOPZ"
+                                                        >
+                                                    Jelinkov&#225; Jaroslava
+                                                </option>
+                                                <option value="U0YJ2"
+                                                        >
+                                                    Jič&#237;nsk&#253; Tom&#225;š
+                                                </option>
+                                                <option value="UUORL"
+                                                        >
+                                                    Jir&#225;sek Lubom&#237;r
+                                                </option>
+                                                <option value="UZOM7"
+                                                        >
+                                                    Jirka Miroslav
+                                                </option>
+                                                <option value="UOONU"
+                                                        >
+                                                    Jiroutov&#225; Kateřina
+                                                </option>
+                                                <option value="U  23"
+                                                        >
+                                                    Joz&#237;fov&#225; Irena
+                                                </option>
+                                                <option value="USOR2"
+                                                        >
+                                                    Kašpar Vladim&#237;r
+                                                </option>
+                                                <option value="U0OSW"
+                                                        >
+                                                    Kmoch Petr
+                                                </option>
+                                                <option value="UVORV"
+                                                        >
+                                                    Knotek Jan
+                                                </option>
+                                                <option value="UOOP8"
+                                                        >
+                                                    Kopeck&#253; Zbyněk
+                                                </option>
+                                                <option value="UMONI"
+                                                        >
+                                                    Kouck&#253; Miroslav
+                                                </option>
+                                                <option value="U0OSR"
+                                                        >
+                                                    Koz&#225;kov&#225; Denisa
+                                                </option>
+                                                <option value="UXOSA"
+                                                        >
+                                                    Kratochv&#237;l Jan
+                                                </option>
+                                                <option value="UWOS3"
+                                                        >
+                                                    Křivkov&#225; Lucie
+                                                </option>
+                                                <option value="UOOO1"
+                                                        >
+                                                    Kubelka Aleš
+                                                </option>
+                                                <option value="U  24"
+                                                        >
+                                                    Kudrna Ivan
+                                                </option>
+                                                <option value="UWOS1"
+                                                        >
+                                                    Kupka Libor
+                                                </option>
+                                                <option value="U7TVP"
+                                                        >
+                                                    Kvasničkov&#225; Alena
+                                                </option>
+                                                <option value="UOONZ"
+                                                        >
+                                                    Kverek Česlav
+                                                </option>
+                                                <option value="USOR3"
+                                                        >
+                                                    Laubov&#225; Lenka
+                                                </option>
+                                                <option value="UYOSE"
+                                                        >
+                                                    L&#233;dlov&#225; Lucie
+                                                </option>
+                                                <option value="UZOM9"
+                                                        >
+                                                    Lev&#225; Gabriela
+                                                </option>
+                                                <option value="UNONK"
+                                                        >
+                                                    Ludv&#237;kov&#225; Jiřina
+                                                </option>
+                                                <option value="UMONF"
+                                                        >
+                                                    Michalec Milan
+                                                </option>
+                                                <option value="UE3DL"
+                                                        >
+                                                    Mikul&#225;š Petr
+                                                </option>
+                                                <option value="U0OSV"
+                                                        >
+                                                    Najmanov&#225; Lucie
+                                                </option>
+                                                <option value="UROQQ"
+                                                        >
+                                                    Nedbalov&#225; Štěp&#225;nka
+                                                </option>
+                                                <option value="UOOPA"
+                                                        >
+                                                    Neradov&#225; Soňa
+                                                </option>
+                                                <option value="USOR5"
+                                                        >
+                                                    Nosek Zdeněk
+                                                </option>
+                                                <option value="UZOM5"
+                                                        >
+                                                    Nov&#225; Jitka
+                                                </option>
+                                                <option value="UVORW"
+                                                        >
+                                                    Nov&#225;k Pavel
+                                                </option>
+                                                <option value="U0OSX"
+                                                        >
+                                                    Novotn&#253; Dominik
+                                                </option>
+                                                <option value="UTORI"
+                                                        >
+                                                    Orl&#237;ček Miloš
+                                                </option>
+                                                <option value="UOONY"
+                                                        >
+                                                    P&#225;calov&#225; Pavl&#237;na
+                                                </option>
+                                                <option value="UPOPK"
+                                                        >
+                                                    Panuška Ivan
+                                                </option>
+                                                <option value="UOONW"
+                                                        >
+                                                    Pap&#237;kov&#225; Marie
+                                                </option>
+                                                <option value="U0OST"
+                                                        >
+                                                    P&#225;sler Miroslav
+                                                </option>
+                                                <option value="U  33"
+                                                        >
+                                                    Petera Martin
+                                                </option>
+                                                <option value="U  10"
+                                                        >
+                                                    Pol&#225;čkov&#225; Danuše
+                                                </option>
+                                                <option value="UQOQ6"
+                                                        >
+                                                    Pol&#225;k Jiř&#237;
+                                                </option>
+                                                <option value="UTMBB"
+                                                        >
+                                                    Posp&#237;šilov&#225; Andrea
+                                                </option>
+                                                <option value="UZOMQ"
+                                                        >
+                                                    Př&#237;vratsk&#253; Zdeněk
+                                                </option>
+                                                <option value="UXOS8"
+                                                        >
+                                                    Psotkov&#225; Š&#225;rka
+                                                </option>
+                                                <option value="UOONQ"
+                                                        >
+                                                    Račick&#253; Slavom&#237;r
+                                                </option>
+                                                <option value="U0107"
+                                                        >
+                                                    Reslov&#225; Jana
+                                                </option>
+                                                <option value="USOR8"
+                                                        >
+                                                    Retka Tom&#225;š
+                                                </option>
+                                                <option value="UOOO8"
+                                                        >
+                                                    Rudolf Jiř&#237;
+                                                </option>
+                                                <option value="UROQM"
+                                                        >
+                                                    Řehounek Luboš
+                                                </option>
+                                                <option value="UBCDT"
+                                                        >
+                                                    Sobolov&#225; Zdeňka
+                                                </option>
+                                                <option value="UOOOL"
+                                                        >
+                                                    Strat&#237;lek Miloš
+                                                </option>
+                                                <option value="UZOSO"
+                                                        >
+                                                    Suk Petr
+                                                </option>
+                                                <option value="UROQN"
+                                                        >
+                                                    Svatoň Martin
+                                                </option>
+                                                <option value="UQOQ1"
+                                                        >
+                                                    Svoboda Jaroslav
+                                                </option>
+                                                <option value="UPOPN"
+                                                        >
+                                                    Šeda Petr
+                                                </option>
+                                                <option value="U  37"
+                                                        >
+                                                    Šilar Zdeněk
+                                                </option>
+                                                <option value="UZOSQ"
+                                                        >
+                                                    Štaudov&#225; Renata
+                                                </option>
+                                                <option value="UZOMP"
+                                                        >
+                                                    Štědr&#253; Luk&#225;š
+                                                </option>
+                                                <option value="USORD"
+                                                        >
+                                                    Štech Jan
+                                                </option>
+                                                <option value="UE5IF"
+                                                        >
+                                                    Štěp&#225;nek Ladislav
+                                                </option>
+                                                <option value="U  40"
+                                                        >
+                                                    Štver&#225;k Milan
+                                                </option>
+                                                <option value="UUORN"
+                                                        >
+                                                    Švec Radim
+                                                </option>
+                                                <option value="UWOS2"
+                                                        >
+                                                    Tisoň David
+                                                </option>
+                                                <option value="UWORX"
+                                                        >
+                                                    Trub&#225;k Zdeněk
+                                                </option>
+                                                <option value="UUORP"
+                                                        >
+                                                    Truncov&#225; Tereza
+                                                </option>
+                                                <option value="UYOSI"
+                                                        >
+                                                    Vačk&#225;ř Michal
+                                                </option>
+                                                <option value="UPOPI"
+                                                        >
+                                                    Věcek František
+                                                </option>
+                                                <option value="UZOMO"
+                                                        >
+                                                    Venzara Robert
+                                                </option>
+                                                <option value="UOOP9"
+                                                        >
+                                                    Zah&#225;lka Martin
+                                                </option>
+                                                <option value="U  62"
+                                                        >
+                                                    Zapletal Miroslav
+                                                </option>
+                                                <option value="UQOQ2"
+                                                        >
+                                                    Zeman Jaroslav
+                                                </option>
+                                        </select>
+                                    </div>
+                                                                    <div class="d-inline-flex m-1 mr-2 position-relative ico32-ovladani-smerovkaDolu">
+                                        <span class="bk-timetable-label">M&#237;stnost</span>
+                                        <select id="selectedRoom" class="custom-select" onchange="changeRoom()">
+                                            <option></option>
+                                                <option value="0N"
+                                                        >
+                                                    A003
+                                                </option>
+                                                <option value="0O"
+                                                        >
+                                                    A005
+                                                </option>
+                                                <option value="LE"
+                                                        >
+                                                    A101
+                                                </option>
+                                                <option value="2B"
+                                                        >
+                                                    A102
+                                                </option>
+                                                <option value="ZX"
+                                                        >
+                                                    A103
+                                                </option>
+                                                <option value="00"
+                                                        >
+                                                    B003
+                                                </option>
+                                                <option value="1P"
+                                                        >
+                                                    B007
+                                                </option>
+                                                <option value="1U"
+                                                        >
+                                                    B009
+                                                </option>
+                                                <option value="77"
+                                                        >
+                                                    B024
+                                                </option>
+                                                <option value="05"
+                                                        >
+                                                    B026
+                                                </option>
+                                                <option value="T0"
+                                                        >
+                                                    B030
+                                                </option>
+                                                <option value="1Q"
+                                                        >
+                                                    B068
+                                                </option>
+                                                <option value="0X"
+                                                        >
+                                                    B101
+                                                </option>
+                                                <option value="N5"
+                                                        >
+                                                    B102
+                                                </option>
+                                                <option value="FO"
+                                                        >
+                                                    B103
+                                                </option>
+                                                <option value="DT"
+                                                        >
+                                                    B104
+                                                </option>
+                                                <option value="07"
+                                                        >
+                                                    B125
+                                                </option>
+                                                <option value="EF"
+                                                        >
+                                                    B130
+                                                </option>
+                                                <option value="S8"
+                                                        >
+                                                    B133
+                                                </option>
+                                                <option value="SR"
+                                                        >
+                                                    B201
+                                                </option>
+                                                <option value="LG"
+                                                        >
+                                                    B202
+                                                </option>
+                                                <option value="G4"
+                                                        >
+                                                    B203
+                                                </option>
+                                                <option value="VF"
+                                                        >
+                                                    B204
+                                                </option>
+                                                <option value="IZ"
+                                                        >
+                                                    B206
+                                                </option>
+                                                <option value="JI"
+                                                        >
+                                                    B221
+                                                </option>
+                                                <option value="U2"
+                                                        >
+                                                    B301
+                                                </option>
+                                                <option value="GZ"
+                                                        >
+                                                    B302
+                                                </option>
+                                                <option value="ZW"
+                                                        >
+                                                    B303
+                                                </option>
+                                                <option value="A5"
+                                                        >
+                                                    B304
+                                                </option>
+                                                <option value="30"
+                                                        >
+                                                    B305
+                                                </option>
+                                                <option value="RR"
+                                                        >
+                                                    B306
+                                                </option>
+                                                <option value="84"
+                                                        >
+                                                    B321
+                                                </option>
+                                                <option value="51"
+                                                        >
+                                                    B322
+                                                </option>
+                                                <option value="50"
+                                                        >
+                                                    B323
+                                                </option>
+                                                <option value="6B"
+                                                        >
+                                                    B330
+                                                </option>
+                                                <option value="YA"
+                                                        >
+                                                    B332
+                                                </option>
+                                                <option value="FV"
+                                                        >
+                                                    B333
+                                                </option>
+                                                <option value="IP"
+                                                        >
+                                                    B401
+                                                </option>
+                                                <option value="95"
+                                                        >
+                                                    B411
+                                                </option>
+                                                <option value="ZY"
+                                                        >
+                                                    baz
+                                                </option>
+                                                <option value="1M"
+                                                        >
+                                                    baz2
+                                                </option>
+                                                <option value="0M"
+                                                        >
+                                                    C111
+                                                </option>
+                                                <option value="01"
+                                                        >
+                                                    C113
+                                                </option>
+                                                <option value="5H"
+                                                        >
+                                                    C203
+                                                </option>
+                                                <option value="NP"
+                                                        >
+                                                    C205
+                                                </option>
+                                                <option value="38"
+                                                        >
+                                                    C214
+                                                </option>
+                                                <option value="3S"
+                                                        >
+                                                    C217
+                                                </option>
+                                                <option value="32"
+                                                        >
+                                                    C314
+                                                </option>
+                                                <option value="04"
+                                                        >
+                                                    C316
+                                                </option>
+                                                <option value="9A"
+                                                        >
+                                                    C317
+                                                </option>
+                                                <option value="06"
+                                                        >
+                                                    D053
+                                                </option>
+                                                <option value="B9"
+                                                        >
+                                                    D055
+                                                </option>
+                                                <option value="G0"
+                                                        >
+                                                    D152
+                                                </option>
+                                                <option value="9B"
+                                                        >
+                                                    D153
+                                                </option>
+                                                <option value="14"
+                                                        >
+                                                    D163
+                                                </option>
+                                                <option value="53"
+                                                        >
+                                                    D251
+                                                </option>
+                                                <option value="C0"
+                                                        >
+                                                    D252
+                                                </option>
+                                                <option value="3Z"
+                                                        >
+                                                    D253
+                                                </option>
+                                                <option value="13"
+                                                        >
+                                                    D263
+                                                </option>
+                                                <option value="35"
+                                                        >
+                                                    D351
+                                                </option>
+                                                <option value="OG"
+                                                        >
+                                                    D352
+                                                </option>
+                                                <option value="1N"
+                                                        >
+                                                    D353
+                                                </option>
+                                                <option value="1L"
+                                                        >
+                                                    D363
+                                                </option>
+                                                <option value="20"
+                                                        >
+                                                    E206
+                                                </option>
+                                                <option value="1Y"
+                                                        >
+                                                    E220
+                                                </option>
+                                                <option value="1Z"
+                                                        >
+                                                    E221
+                                                </option>
+                                                <option value="09"
+                                                        >
+                                                    E304
+                                                </option>
+                                                <option value="08"
+                                                        >
+                                                    E306
+                                                </option>
+                                                <option value="0B"
+                                                        >
+                                                    E309
+                                                </option>
+                                                <option value="0C"
+                                                        >
+                                                    E318
+                                                </option>
+                                                <option value="0E"
+                                                        >
+                                                    E319
+                                                </option>
+                                                <option value="0A"
+                                                        >
+                                                    E322
+                                                </option>
+                                                <option value="0P"
+                                                        >
+                                                    EA10
+                                                </option>
+                                                <option value="0Q"
+                                                        >
+                                                    EA20
+                                                </option>
+                                                <option value="0W"
+                                                        >
+                                                    EA21
+                                                </option>
+                                                <option value="0S"
+                                                        >
+                                                    EA22
+                                                </option>
+                                                <option value="0V"
+                                                        >
+                                                    EA25
+                                                </option>
+                                                <option value="0R"
+                                                        >
+                                                    EA28
+                                                </option>
+                                                <option value="0T"
+                                                        >
+                                                    EA29
+                                                </option>
+                                                <option value="16"
+                                                        >
+                                                    EA30
+                                                </option>
+                                                <option value="15"
+                                                        >
+                                                    EA31
+                                                </option>
+                                                <option value="1R"
+                                                        >
+                                                    EA4
+                                                </option>
+                                                <option value="1S"
+                                                        >
+                                                    EA6
+                                                </option>
+                                                <option value="0L"
+                                                        >
+                                                    EB16
+                                                </option>
+                                                <option value="0Y"
+                                                        >
+                                                    ED15
+                                                </option>
+                                                <option value="1W"
+                                                        >
+                                                    ED29
+                                                </option>
+                                                <option value="0Z"
+                                                        >
+                                                    ED33
+                                                </option>
+                                                <option value="10"
+                                                        >
+                                                    ED34
+                                                </option>
+                                                <option value="1V"
+                                                        >
+                                                    ED35
+                                                </option>
+                                                <option value="22"
+                                                        >
+                                                    EL04
+                                                </option>
+                                                <option value="23"
+                                                        >
+                                                    EL05
+                                                </option>
+                                                <option value="21"
+                                                        >
+                                                    EL09
+                                                </option>
+                                                <option value="0G"
+                                                        >
+                                                    ELA1
+                                                </option>
+                                                <option value="0I"
+                                                        >
+                                                    ELA2
+                                                </option>
+                                                <option value="0J"
+                                                        >
+                                                    ELA3
+                                                </option>
+                                                <option value="0K"
+                                                        >
+                                                    ELA4
+                                                </option>
+                                                <option value="FR"
+                                                        >
+                                                    EM-A
+                                                </option>
+                                                <option value="1X"
+                                                        >
+                                                    EM-B
+                                                </option>
+                                                <option value="YC"
+                                                        >
+                                                    EM-C
+                                                </option>
+                                                <option value="ZZ"
+                                                        >
+                                                    EM-D
+                                                </option>
+                                                <option value="24"
+                                                        >
+                                                    EVT1
+                                                </option>
+                                                <option value="25"
+                                                        >
+                                                    EVT2
+                                                </option>
+                                                <option value="1O"
+                                                        >
+                                                    PERG
+                                                </option>
+                                                <option value="1T"
+                                                        >
+                                                    SOK
+                                                </option>
+                                                <option value="2F"
+                                                        >
+                                                    TV
+                                                </option>
+                                                <option value="0D"
+                                                        >
+                                                    TV2
+                                                </option>
+                                        </select>
+                                    </div>
+                                                                    <div class="d-inline-flex m-1 mr-2">
+                                        <div class="btn-group btn-group-toggle bk-timetable-btngroup" data-toggle="buttons" id="selectedTerm" style="height: 28px;">
+                                                <label class="btn btn-secondary ">
+                                                    <input type="radio" name="options" id="option1" value="Permanent"  onchange="changeTerm()"> St&#225;l&#253;
+                                                    </label>
+                                                                                            <label class="btn btn-secondary   active
+">
+                                                    <input type="radio" name="options" id="option2" value="Actual"   checked="checked"
+ onchange="changeTerm()"> Tento t&#253;den
+                                                    </label>
+                                                                                            <label class="btn btn-secondary ">
+                                                    <input type="radio" name="options" id="option3" value="Next"  onchange="changeTerm()"> Př&#237;št&#237; t&#253;den
+                                                    </label>
+                                        </div>
+                                    </div>
+                                                                    <div class="d-inline-flex m-1 mr-2" style="margin-top: 0px !important;">
+                                        <div id="reports" runat="server" class="dropdown ml-3">
+                                            <button class="dropbtn icon ico32-data-tiskarna" onclick="printTimetable()"></button>
+                                        </div>
+                                    </div>
+                            </div>
+
+                            <div class="bk-timetable-selects row d-print-none">
+                                    <div class="d-inline-flex m-1 mr-2 bk-timetable-class-teacher bk-timetable-label" data-testid="bk-timetable-class-teacher">
+                                        Tř&#237;dn&#237; učitel: Mgr. Martin Braun
+                                    </div>
+                                                                    <div class="d-inline-flex m-1 mr-2 bk-timetable-class-teacher bk-timetable-label" data-testid="bk-timetable-acting-class-teacher">
+                                        Zastupuj&#237;c&#237; tř&#237;dn&#237; učitel: Mgr. Radim Švec
+                                    </div>
+                            </div>
+
+                    </div>
+                    <div class="mt-2">
+                        <a class="ico32-menu-napoveda bk-help-icon" href="https://napoveda.bakalari.cz/index.html?wa_param_volne.htm" rel="noopener noreferrer" target="_blank"></a>
+                    </div>
+                </div>
+                    </div>
+
+
+        <div class="container-fluid bk-timetable-header-print">
+            <span class="bk-timetable-school">
+                Středn&#237; průmyslov&#225; škola elektrotechnick&#225; a Vyšš&#237; odborn&#225; škola Pardubice
+            </span>
+
+                <span class="bk-timetable-title">
+                    3.D
+                </span>
+                    <span class="bk-timetable-class-teacher" data-testid="bk-timetable-class-teacher">
+                        Tř&#237;dn&#237; učitel: Mgr. Martin Braun
+                    </span>
+                    <span class="bk-timetable-class-teacher" data-testid="bk-timetable-acting-class-teacher">
+                        Zastupuj&#237;c&#237; tř&#237;dn&#237; učitel: Mgr. Radim Švec
+                    </span>
+                                            </div>
+
+        <div id="teacher_canvas" class="bk-canvas">
+            <div class="bk-canvas-content">
+                <div class="bk-canvas-header">
+                    <span class="bk-canvas-title">Zvolte učitele. . .</span>
+                    <span href="javascript:void(0)" class="closebtn ico32-ovladani-krizek" onclick="closeCanvas()"></span>
+                </div>
+                <div class="bk-canvas-body">
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UVORT"
+                           >
+                            <span>Ad&#225;mek Libor</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UZOSM"
+                           >
+                            <span>Andrle Marcel</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UQOQ4"
+                           >
+                            <span>Bajer Libor</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UZON6"
+                           >
+                            <span>Bakl&#237;kov&#225; Ivona</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UPOPC"
+                           >
+                            <span>B&#225;rta Čestm&#237;r</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UEMKE"
+                           >
+                            <span>Bartel Jaroslav</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UROQO"
+                           >
+                            <span>Bartoš Petr</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/U0080"
+                           >
+                            <span>Bednař&#237;kov&#225; Lea</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UUORO"
+                           >
+                            <span>Bouškov&#225; Pavl&#237;na</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UXOS5"
+                           >
+                            <span>Braun Martin</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UJONA"
+                           >
+                            <span>Bub&#225;k Petr</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UXOS7"
+                           >
+                            <span>Budina Martin</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UY5HV"
+                           >
+                            <span>Budina Petr</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UZON1"
+                           >
+                            <span>Budinov&#225; Eva</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/U0108"
+                           >
+                            <span>Cach Zdeněk</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/USORB"
+                           >
+                            <span>Cerman Luděk</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UOONP"
+                           >
+                            <span>Č&#225;p Pavel</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UQOPV"
+                           >
+                            <span>Čechlovsk&#225; Dagmar</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/U  52"
+                           >
+                            <span>Černoch Milan</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UZOSN"
+                           >
+                            <span>Daleck&#225; Eva</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UZOSP"
+                           >
+                            <span>Dočkal Pavel</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UOOP2"
+                           >
+                            <span>Dus Ren&#233;</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UQOPW"
+                           >
+                            <span>Dvoř&#225;kov&#225; Jana</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UWORZ"
+                           >
+                            <span>Fereš Pavel</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UTVCG"
+                           >
+                            <span>Fišar Petr</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UOONS"
+                           >
+                            <span>Han&#225;kov&#225; Vladim&#237;ra</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UZOMX"
+                           >
+                            <span>Hejna Petr</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/USOQW"
+                           >
+                            <span>Hrabaň V&#225;clav</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UQOPX"
+                           >
+                            <span>Hradsk&#253; Pavel</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UOOO6"
+                           >
+                            <span>Hrnč&#237;ř Petr</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/U  12"
+                           >
+                            <span>Hron Vladim&#237;r</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UOONR"
+                           >
+                            <span>Hůlka Vladim&#237;r</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UOOOC"
+                           >
+                            <span>Hurda Jan</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/U0OSS"
+                           >
+                            <span>Hušek Petr</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UOONV"
+                           >
+                            <span>Hypšmanov&#225; Dobromila</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UQOQ3"
+                           >
+                            <span>Chvojka Matěj</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UYOSJ"
+                           >
+                            <span>Janda Tom&#225;š</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UQOPY"
+                           >
+                            <span>Jedličkov&#225; Alena</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UMVMU"
+                           >
+                            <span>Jel&#237;nek Radek</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UQOPZ"
+                           >
+                            <span>Jelinkov&#225; Jaroslava</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/U0YJ2"
+                           >
+                            <span>Jič&#237;nsk&#253; Tom&#225;š</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UUORL"
+                           >
+                            <span>Jir&#225;sek Lubom&#237;r</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UZOM7"
+                           >
+                            <span>Jirka Miroslav</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UOONU"
+                           >
+                            <span>Jiroutov&#225; Kateřina</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/U  23"
+                           >
+                            <span>Joz&#237;fov&#225; Irena</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/USOR2"
+                           >
+                            <span>Kašpar Vladim&#237;r</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/U0OSW"
+                           >
+                            <span>Kmoch Petr</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UVORV"
+                           >
+                            <span>Knotek Jan</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UOOP8"
+                           >
+                            <span>Kopeck&#253; Zbyněk</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UMONI"
+                           >
+                            <span>Kouck&#253; Miroslav</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/U0OSR"
+                           >
+                            <span>Koz&#225;kov&#225; Denisa</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UXOSA"
+                           >
+                            <span>Kratochv&#237;l Jan</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UWOS3"
+                           >
+                            <span>Křivkov&#225; Lucie</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UOOO1"
+                           >
+                            <span>Kubelka Aleš</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/U  24"
+                           >
+                            <span>Kudrna Ivan</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UWOS1"
+                           >
+                            <span>Kupka Libor</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/U7TVP"
+                           >
+                            <span>Kvasničkov&#225; Alena</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UOONZ"
+                           >
+                            <span>Kverek Česlav</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/USOR3"
+                           >
+                            <span>Laubov&#225; Lenka</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UYOSE"
+                           >
+                            <span>L&#233;dlov&#225; Lucie</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UZOM9"
+                           >
+                            <span>Lev&#225; Gabriela</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UNONK"
+                           >
+                            <span>Ludv&#237;kov&#225; Jiřina</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UMONF"
+                           >
+                            <span>Michalec Milan</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UE3DL"
+                           >
+                            <span>Mikul&#225;š Petr</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/U0OSV"
+                           >
+                            <span>Najmanov&#225; Lucie</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UROQQ"
+                           >
+                            <span>Nedbalov&#225; Štěp&#225;nka</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UOOPA"
+                           >
+                            <span>Neradov&#225; Soňa</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/USOR5"
+                           >
+                            <span>Nosek Zdeněk</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UZOM5"
+                           >
+                            <span>Nov&#225; Jitka</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UVORW"
+                           >
+                            <span>Nov&#225;k Pavel</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/U0OSX"
+                           >
+                            <span>Novotn&#253; Dominik</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UTORI"
+                           >
+                            <span>Orl&#237;ček Miloš</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UOONY"
+                           >
+                            <span>P&#225;calov&#225; Pavl&#237;na</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UPOPK"
+                           >
+                            <span>Panuška Ivan</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UOONW"
+                           >
+                            <span>Pap&#237;kov&#225; Marie</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/U0OST"
+                           >
+                            <span>P&#225;sler Miroslav</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/U  33"
+                           >
+                            <span>Petera Martin</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/U  10"
+                           >
+                            <span>Pol&#225;čkov&#225; Danuše</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UQOQ6"
+                           >
+                            <span>Pol&#225;k Jiř&#237;</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UTMBB"
+                           >
+                            <span>Posp&#237;šilov&#225; Andrea</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UZOMQ"
+                           >
+                            <span>Př&#237;vratsk&#253; Zdeněk</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UXOS8"
+                           >
+                            <span>Psotkov&#225; Š&#225;rka</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UOONQ"
+                           >
+                            <span>Račick&#253; Slavom&#237;r</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/U0107"
+                           >
+                            <span>Reslov&#225; Jana</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/USOR8"
+                           >
+                            <span>Retka Tom&#225;š</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UOOO8"
+                           >
+                            <span>Rudolf Jiř&#237;</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UROQM"
+                           >
+                            <span>Řehounek Luboš</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UBCDT"
+                           >
+                            <span>Sobolov&#225; Zdeňka</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UOOOL"
+                           >
+                            <span>Strat&#237;lek Miloš</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UZOSO"
+                           >
+                            <span>Suk Petr</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UROQN"
+                           >
+                            <span>Svatoň Martin</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UQOQ1"
+                           >
+                            <span>Svoboda Jaroslav</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UPOPN"
+                           >
+                            <span>Šeda Petr</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/U  37"
+                           >
+                            <span>Šilar Zdeněk</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UZOSQ"
+                           >
+                            <span>Štaudov&#225; Renata</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UZOMP"
+                           >
+                            <span>Štědr&#253; Luk&#225;š</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/USORD"
+                           >
+                            <span>Štech Jan</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UE5IF"
+                           >
+                            <span>Štěp&#225;nek Ladislav</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/U  40"
+                           >
+                            <span>Štver&#225;k Milan</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UUORN"
+                           >
+                            <span>Švec Radim</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UWOS2"
+                           >
+                            <span>Tisoň David</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UWORX"
+                           >
+                            <span>Trub&#225;k Zdeněk</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UUORP"
+                           >
+                            <span>Truncov&#225; Tereza</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UYOSI"
+                           >
+                            <span>Vačk&#225;ř Michal</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UPOPI"
+                           >
+                            <span>Věcek František</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UZOMO"
+                           >
+                            <span>Venzara Robert</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UOOP9"
+                           >
+                            <span>Zah&#225;lka Martin</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/U  62"
+                           >
+                            <span>Zapletal Miroslav</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/teacher/UQOQ2"
+                           >
+                            <span>Zeman Jaroslav</span>
+                        </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="class_canvas" class="bk-canvas">
+            <div class="bk-canvas-content">
+                <div class="bk-canvas-header">
+                    <span class="bk-canvas-title">Zvolte tř&#237;du. . .</span>
+                    <span href="javascript:void(0)" class="closebtn ico32-ovladani-krizek" onclick="closeCanvas()"></span>
+                </div>
+                <div class="bk-canvas-body">
+                        <a href="/bakaweb/timetable/public/Actual/class/3M"
+                           >
+                            <span>1.A</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/class/3N"
+                           >
+                            <span>1.B</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/class/3O"
+                           >
+                            <span>1.D</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/class/3P"
+                           >
+                            <span>1.E</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/class/3V"
+                           >
+                            <span>1.EL</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/class/3W"
+                           >
+                            <span>1.EM</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/class/3Q"
+                           >
+                            <span>1.G</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/class/3R"
+                           >
+                            <span>1.H</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/class/3S"
+                           >
+                            <span>1.I</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/class/3T"
+                           >
+                            <span>1.ME</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/class/3U"
+                           >
+                            <span>1.PE</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/class/3X"
+                           >
+                            <span>1.S</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/class/3Y"
+                           >
+                            <span>1.SB</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/class/36"
+                           >
+                            <span>2.A</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/class/37"
+                           >
+                            <span>2.B</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/class/39"
+                           >
+                            <span>2.D</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/class/3A"
+                           >
+                            <span>2.E</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/class/3G"
+                           >
+                            <span>2.EL</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/class/3I"
+                           >
+                            <span>2.EM</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/class/3B"
+                           >
+                            <span>2.G</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/class/3C"
+                           >
+                            <span>2.H</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/class/3D"
+                           >
+                            <span>2.I</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/class/3E"
+                           >
+                            <span>2.ME</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/class/3F"
+                           >
+                            <span>2.PE</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/class/3J"
+                           >
+                            <span>2.S</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/class/2R"
+                           >
+                            <span>3.A</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/class/2S"
+                           >
+                            <span>3.B</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/class/2T"
+                             class="active"
+>
+                            <span>3.D</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/class/2U"
+                           >
+                            <span>3.E</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/class/31"
+                           >
+                            <span>3.EL</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/class/32"
+                           >
+                            <span>3.EM</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/class/2V"
+                           >
+                            <span>3.G</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/class/2W"
+                           >
+                            <span>3.H</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/class/2X"
+                           >
+                            <span>3.I</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/class/2Z"
+                           >
+                            <span>3.ME</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/class/34"
+                           >
+                            <span>3.S</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/class/33"
+                           >
+                            <span>3.V</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/class/2B"
+                           >
+                            <span>4.A</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/class/2C"
+                           >
+                            <span>4.B</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/class/2D"
+                           >
+                            <span>4.D</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/class/2E"
+                           >
+                            <span>4.E</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/class/2F"
+                           >
+                            <span>4.F</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/class/2G"
+                           >
+                            <span>4.G</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/class/2I"
+                           >
+                            <span>4.H</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/class/2J"
+                           >
+                            <span>4.I</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/class/2K"
+                           >
+                            <span>4.ME</span>
+                        </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="room_canvas" class="bk-canvas">
+            <div class="bk-canvas-content">
+                <div class="bk-canvas-header">
+                    <span class="bk-canvas-title">Zvolte m&#237;stnost. . .</span>
+                    <span href="javascript:void(0)" class="closebtn ico32-ovladani-krizek" onclick="closeCanvas()"></span>
+                </div>
+                <div class="bk-canvas-body">
+                        <a href="/bakaweb/timetable/public/Actual/room/0N"
+                           >
+                            <span>A003</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/0O"
+                           >
+                            <span>A005</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/LE"
+                           >
+                            <span>A101</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/2B"
+                           >
+                            <span>A102</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/ZX"
+                           >
+                            <span>A103</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/00"
+                           >
+                            <span>B003</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/1P"
+                           >
+                            <span>B007</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/1U"
+                           >
+                            <span>B009</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/77"
+                           >
+                            <span>B024</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/05"
+                           >
+                            <span>B026</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/T0"
+                           >
+                            <span>B030</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/1Q"
+                           >
+                            <span>B068</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/0X"
+                           >
+                            <span>B101</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/N5"
+                           >
+                            <span>B102</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/FO"
+                           >
+                            <span>B103</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/DT"
+                           >
+                            <span>B104</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/07"
+                           >
+                            <span>B125</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/EF"
+                           >
+                            <span>B130</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/S8"
+                           >
+                            <span>B133</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/SR"
+                           >
+                            <span>B201</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/LG"
+                           >
+                            <span>B202</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/G4"
+                           >
+                            <span>B203</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/VF"
+                           >
+                            <span>B204</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/IZ"
+                           >
+                            <span>B206</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/JI"
+                           >
+                            <span>B221</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/U2"
+                           >
+                            <span>B301</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/GZ"
+                           >
+                            <span>B302</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/ZW"
+                           >
+                            <span>B303</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/A5"
+                           >
+                            <span>B304</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/30"
+                           >
+                            <span>B305</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/RR"
+                           >
+                            <span>B306</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/84"
+                           >
+                            <span>B321</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/51"
+                           >
+                            <span>B322</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/50"
+                           >
+                            <span>B323</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/6B"
+                           >
+                            <span>B330</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/YA"
+                           >
+                            <span>B332</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/FV"
+                           >
+                            <span>B333</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/IP"
+                           >
+                            <span>B401</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/95"
+                           >
+                            <span>B411</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/ZY"
+                           >
+                            <span>baz</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/1M"
+                           >
+                            <span>baz2</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/0M"
+                           >
+                            <span>C111</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/01"
+                           >
+                            <span>C113</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/5H"
+                           >
+                            <span>C203</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/NP"
+                           >
+                            <span>C205</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/38"
+                           >
+                            <span>C214</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/3S"
+                           >
+                            <span>C217</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/32"
+                           >
+                            <span>C314</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/04"
+                           >
+                            <span>C316</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/9A"
+                           >
+                            <span>C317</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/06"
+                           >
+                            <span>D053</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/B9"
+                           >
+                            <span>D055</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/G0"
+                           >
+                            <span>D152</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/9B"
+                           >
+                            <span>D153</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/14"
+                           >
+                            <span>D163</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/53"
+                           >
+                            <span>D251</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/C0"
+                           >
+                            <span>D252</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/3Z"
+                           >
+                            <span>D253</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/13"
+                           >
+                            <span>D263</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/35"
+                           >
+                            <span>D351</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/OG"
+                           >
+                            <span>D352</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/1N"
+                           >
+                            <span>D353</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/1L"
+                           >
+                            <span>D363</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/20"
+                           >
+                            <span>E206</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/1Y"
+                           >
+                            <span>E220</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/1Z"
+                           >
+                            <span>E221</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/09"
+                           >
+                            <span>E304</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/08"
+                           >
+                            <span>E306</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/0B"
+                           >
+                            <span>E309</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/0C"
+                           >
+                            <span>E318</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/0E"
+                           >
+                            <span>E319</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/0A"
+                           >
+                            <span>E322</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/0P"
+                           >
+                            <span>EA10</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/0Q"
+                           >
+                            <span>EA20</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/0W"
+                           >
+                            <span>EA21</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/0S"
+                           >
+                            <span>EA22</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/0V"
+                           >
+                            <span>EA25</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/0R"
+                           >
+                            <span>EA28</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/0T"
+                           >
+                            <span>EA29</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/16"
+                           >
+                            <span>EA30</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/15"
+                           >
+                            <span>EA31</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/1R"
+                           >
+                            <span>EA4</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/1S"
+                           >
+                            <span>EA6</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/0L"
+                           >
+                            <span>EB16</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/0Y"
+                           >
+                            <span>ED15</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/1W"
+                           >
+                            <span>ED29</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/0Z"
+                           >
+                            <span>ED33</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/10"
+                           >
+                            <span>ED34</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/1V"
+                           >
+                            <span>ED35</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/22"
+                           >
+                            <span>EL04</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/23"
+                           >
+                            <span>EL05</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/21"
+                           >
+                            <span>EL09</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/0G"
+                           >
+                            <span>ELA1</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/0I"
+                           >
+                            <span>ELA2</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/0J"
+                           >
+                            <span>ELA3</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/0K"
+                           >
+                            <span>ELA4</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/FR"
+                           >
+                            <span>EM-A</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/1X"
+                           >
+                            <span>EM-B</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/YC"
+                           >
+                            <span>EM-C</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/ZZ"
+                           >
+                            <span>EM-D</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/24"
+                           >
+                            <span>EVT1</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/25"
+                           >
+                            <span>EVT2</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/1O"
+                           >
+                            <span>PERG</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/1T"
+                           >
+                            <span>SOK</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/2F"
+                           >
+                            <span>TV</span>
+                        </a>
+                        <a href="/bakaweb/timetable/public/Actual/room/0D"
+                           >
+                            <span>TV2</span>
+                        </a>
+                </div>
+            </div>
+        </div>
+        
+<script type="text/javascript">
+    var TimetableContent = function () {
+        const self = this;
+
+        /** Konstanta použitá pro určení výšky odstavce */
+        self.BigChar = "X";
+
+        /** Zda se jedná o zobrazení pro volný modul */
+        self.IsFreeModule = (typeof timetableWrapperModel == "undefined") === true;
+
+        /** Data rozvrhu ze serveru */
+        const timetableData = {"TimetableDataAvailable":false,"SelectedTeacher":null,"ShowTeacherAbsenceReason":false,"Days":[{"Hours":null,"DayAbbrev":"po","Date":"24.8.","DayOff":true,"DayOffName":"hlavní prázdniny","PauseGuards":[],"HourGuards":[],"GeneralGuards":[],"Absences":[]},{"Hours":null,"DayAbbrev":"út","Date":"25.8.","DayOff":true,"DayOffName":"hlavní prázdniny","PauseGuards":[],"HourGuards":[],"GeneralGuards":[],"Absences":[]},{"Hours":null,"DayAbbrev":"st","Date":"26.8.","DayOff":true,"DayOffName":"hlavní prázdniny","PauseGuards":[],"HourGuards":[],"GeneralGuards":[],"Absences":[]},{"Hours":null,"DayAbbrev":"čt","Date":"27.8.","DayOff":true,"DayOffName":"hlavní prázdniny","PauseGuards":[],"HourGuards":[],"GeneralGuards":[],"Absences":[]},{"Hours":null,"DayAbbrev":"pá","Date":"28.8.","DayOff":true,"DayOffName":"hlavní prázdniny","PauseGuards":[],"HourGuards":[],"GeneralGuards":[],"Absences":[]}],"ShowGroups":true,"ShowRooms":true,"ShowTeachers":true,"Hours":[{"Caption":"0","BeginTime":"7:05","EndTime":"7:50","CssX":"2.67%","CssWidth":"6.67%","StackLevel":0},{"Caption":"1","BeginTime":"8:00","EndTime":"8:45","CssX":"10.67%","CssWidth":"6.67%","StackLevel":0},{"Caption":"2","BeginTime":"8:50","EndTime":"9:35","CssX":"18.67%","CssWidth":"6.67%","StackLevel":0},{"Caption":"3","BeginTime":"9:45","EndTime":"10:30","CssX":"26.67%","CssWidth":"6.67%","StackLevel":0},{"Caption":"4","BeginTime":"10:50","EndTime":"11:35","CssX":"34.67%","CssWidth":"6.67%","StackLevel":0},{"Caption":"5","BeginTime":"11:45","EndTime":"12:30","CssX":"42.67%","CssWidth":"6.67%","StackLevel":0},{"Caption":"6","BeginTime":"12:40","EndTime":"13:25","CssX":"50.67%","CssWidth":"6.67%","StackLevel":0},{"Caption":"7","BeginTime":"13:35","EndTime":"14:20","CssX":"58.67%","CssWidth":"6.67%","StackLevel":0},{"Caption":"8","BeginTime":"14:25","EndTime":"15:10","CssX":"66.67%","CssWidth":"6.67%","StackLevel":0},{"Caption":"9","BeginTime":"15:15","EndTime":"16:00","CssX":"74.67%","CssWidth":"6.67%","StackLevel":0},{"Caption":"10","BeginTime":"16:05","EndTime":"16:50","CssX":"82.67%","CssWidth":"6.67%","StackLevel":0},{"Caption":"11","BeginTime":"16:55","EndTime":"17:40","CssX":"90.67%","CssWidth":"6.67%","StackLevel":0}],"Raster":[{"CssWidth":"0.67%","CssX":"1.33%","Time":"01:40:00","IsFullHour":false},{"CssWidth":"0.67%","CssX":"2.00%","Time":"01:45:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"2.67%","Time":"01:50:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"3.41%","Time":"01:55:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"4.15%","Time":"02:00:00","IsFullHour":true},{"CssWidth":"0.74%","CssX":"4.89%","Time":"02:05:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"5.63%","Time":"02:10:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"6.37%","Time":"02:15:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"7.11%","Time":"02:20:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"7.85%","Time":"02:25:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"8.59%","Time":"02:30:00","IsFullHour":false},{"CssWidth":"0.67%","CssX":"9.33%","Time":"02:35:00","IsFullHour":false},{"CssWidth":"0.67%","CssX":"10.00%","Time":"02:40:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"10.67%","Time":"02:45:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"11.41%","Time":"02:50:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"12.15%","Time":"02:55:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"12.89%","Time":"03:00:00","IsFullHour":true},{"CssWidth":"0.74%","CssX":"13.63%","Time":"03:05:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"14.37%","Time":"03:10:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"15.11%","Time":"03:15:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"15.85%","Time":"03:20:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"16.59%","Time":"03:25:00","IsFullHour":false},{"CssWidth":"0.67%","CssX":"17.33%","Time":"03:30:00","IsFullHour":false},{"CssWidth":"0.67%","CssX":"18.00%","Time":"03:35:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"18.67%","Time":"03:40:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"19.41%","Time":"03:45:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"20.15%","Time":"03:50:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"20.89%","Time":"03:55:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"21.63%","Time":"04:00:00","IsFullHour":true},{"CssWidth":"0.74%","CssX":"22.37%","Time":"04:05:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"23.11%","Time":"04:10:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"23.85%","Time":"04:15:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"24.59%","Time":"04:20:00","IsFullHour":false},{"CssWidth":"0.67%","CssX":"25.33%","Time":"04:25:00","IsFullHour":false},{"CssWidth":"0.67%","CssX":"26.00%","Time":"04:30:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"26.67%","Time":"04:35:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"27.41%","Time":"04:40:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"28.15%","Time":"04:45:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"28.89%","Time":"04:50:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"29.63%","Time":"04:55:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"30.37%","Time":"05:00:00","IsFullHour":true},{"CssWidth":"0.74%","CssX":"31.11%","Time":"05:05:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"31.85%","Time":"05:10:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"32.59%","Time":"05:15:00","IsFullHour":false},{"CssWidth":"0.67%","CssX":"33.33%","Time":"05:20:00","IsFullHour":false},{"CssWidth":"0.67%","CssX":"34.00%","Time":"05:25:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"34.67%","Time":"05:30:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"35.41%","Time":"05:35:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"36.15%","Time":"05:40:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"36.89%","Time":"05:45:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"37.63%","Time":"05:50:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"38.37%","Time":"05:55:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"39.11%","Time":"06:00:00","IsFullHour":true},{"CssWidth":"0.74%","CssX":"39.85%","Time":"06:05:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"40.59%","Time":"06:10:00","IsFullHour":false},{"CssWidth":"0.67%","CssX":"41.33%","Time":"06:15:00","IsFullHour":false},{"CssWidth":"0.67%","CssX":"42.00%","Time":"06:20:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"42.67%","Time":"06:25:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"43.41%","Time":"06:30:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"44.15%","Time":"06:35:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"44.89%","Time":"06:40:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"45.63%","Time":"06:45:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"46.37%","Time":"06:50:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"47.11%","Time":"06:55:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"47.85%","Time":"07:00:00","IsFullHour":true},{"CssWidth":"0.74%","CssX":"48.59%","Time":"07:05:00","IsFullHour":false},{"CssWidth":"0.67%","CssX":"49.33%","Time":"07:10:00","IsFullHour":false},{"CssWidth":"0.67%","CssX":"50.00%","Time":"07:15:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"50.67%","Time":"07:20:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"51.41%","Time":"07:25:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"52.15%","Time":"07:30:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"52.89%","Time":"07:35:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"53.63%","Time":"07:40:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"54.37%","Time":"07:45:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"55.11%","Time":"07:50:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"55.85%","Time":"07:55:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"56.59%","Time":"08:00:00","IsFullHour":true},{"CssWidth":"0.67%","CssX":"57.33%","Time":"08:05:00","IsFullHour":false},{"CssWidth":"0.67%","CssX":"58.00%","Time":"08:10:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"58.67%","Time":"08:15:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"59.41%","Time":"08:20:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"60.15%","Time":"08:25:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"60.89%","Time":"08:30:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"61.63%","Time":"08:35:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"62.37%","Time":"08:40:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"63.11%","Time":"08:45:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"63.85%","Time":"08:50:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"64.59%","Time":"08:55:00","IsFullHour":false},{"CssWidth":"0.67%","CssX":"65.33%","Time":"09:00:00","IsFullHour":true},{"CssWidth":"0.67%","CssX":"66.00%","Time":"09:05:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"66.67%","Time":"09:10:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"67.41%","Time":"09:15:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"68.15%","Time":"09:20:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"68.89%","Time":"09:25:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"69.63%","Time":"09:30:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"70.37%","Time":"09:35:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"71.11%","Time":"09:40:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"71.85%","Time":"09:45:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"72.59%","Time":"09:50:00","IsFullHour":false},{"CssWidth":"0.67%","CssX":"73.33%","Time":"09:55:00","IsFullHour":false},{"CssWidth":"0.67%","CssX":"74.00%","Time":"10:00:00","IsFullHour":true},{"CssWidth":"0.74%","CssX":"74.67%","Time":"10:05:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"75.41%","Time":"10:10:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"76.15%","Time":"10:15:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"76.89%","Time":"10:20:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"77.63%","Time":"10:25:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"78.37%","Time":"10:30:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"79.11%","Time":"10:35:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"79.85%","Time":"10:40:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"80.59%","Time":"10:45:00","IsFullHour":false},{"CssWidth":"0.67%","CssX":"81.33%","Time":"10:50:00","IsFullHour":false},{"CssWidth":"0.67%","CssX":"82.00%","Time":"10:55:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"82.67%","Time":"11:00:00","IsFullHour":true},{"CssWidth":"0.74%","CssX":"83.41%","Time":"11:05:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"84.15%","Time":"11:10:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"84.89%","Time":"11:15:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"85.63%","Time":"11:20:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"86.37%","Time":"11:25:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"87.11%","Time":"11:30:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"87.85%","Time":"11:35:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"88.59%","Time":"11:40:00","IsFullHour":false},{"CssWidth":"0.67%","CssX":"89.33%","Time":"11:45:00","IsFullHour":false},{"CssWidth":"0.67%","CssX":"90.00%","Time":"11:50:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"90.67%","Time":"11:55:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"91.41%","Time":"12:00:00","IsFullHour":true},{"CssWidth":"0.74%","CssX":"92.15%","Time":"12:05:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"92.89%","Time":"12:10:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"93.63%","Time":"12:15:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"94.37%","Time":"12:20:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"95.11%","Time":"12:25:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"95.85%","Time":"12:30:00","IsFullHour":false},{"CssWidth":"0.74%","CssX":"96.59%","Time":"12:35:00","IsFullHour":false},{"CssWidth":"0.67%","CssX":"97.33%","Time":"12:40:00","IsFullHour":false},{"CssWidth":"0.67%","CssX":"98.00%","Time":"12:45:00","IsFullHour":false},{"CssWidth":"0.01%","CssX":"98.67%","Time":"12:50:00","IsFullHour":false}],"IsTeachingOverviewEnabled":false,"ShowTimeline":false,"UserType":-1,"ShowBakaLogo":true,"IsIFrame":false};
+
+        /** Kontrola a nastavení překrývajících se hodin napříč "indexy" */
+        self.SetStackLevels = (data) => {
+            // Pro každý den přiřaď stack levely
+            data.Days.forEach(day => assignStackLevels(day.Hours))
+        }
+
+        self.SetStackLevels(timetableData);
+
+        /** Data celého obsahu rozvrhu */
+        self.TimetableData = ko.mapping.fromJS(timetableData);
+
+        /** Zobrazit místnosti? */
+        self.ShowRooms = ko.computed(() => self.IsFreeModule ? true : timetableWrapperModel.ShowRooms());
+
+        /** Zobrazit učitele? */
+        self.ShowTeachers = ko.computed(() => self.IsFreeModule ? true : timetableWrapperModel.ShowTeachers());
+
+        /** Zobrazit skupiny? */
+        self.ShowGroups = ko.computed(() => self.IsFreeModule ? true : timetableWrapperModel.ShowGroups());
+
+        /** Zda zobrazit v patičce logo Bakaláři */
+        self.ShowBakaLogo = ko.observable(true);
+
+        /**
+        * Zjistí, zda zobrazit atom jako odebraný.
+        * Má být atom zobrazen jako "odebraná" hodina?
+        * Použito při zobrazení podle učitele když atom obsahuje absenci a již bylo zadáno suplování (HasChanged).
+        * V případě, že suplování ještě nebylo zadáno, je hodina zobrazena jako vyučovaná (pouze odlišena polovičním vybarvením).
+        * @param {any} atom data atomu
+        */
+        self.DisplayAtomAsRemoved = (atom) => {
+            var existSelectedTeacher = false;
+            return existSelectedTeacher && atom.HasAbsent() && atom.HasChanged();
+        }
+
+        /** Zda zobrazit informaci o absenci */
+        self.DisplayAbsentInfo = () => true;
+
+        /**
+        * Získá časové rozmezí pro dozor
+        * @param {any} guardData data dozoru
+        */
+        self.GetGuardTimeSpan = (guardData) => {
+
+            const timeStringToDate = (timeString) => {
+                const [hours, minutes, seconds] = timeString.split(':').map(Number);
+                const date = new Date();
+                date.setHours(hours, minutes, seconds || 0, 0);
+                return date;
+            };
+
+            const beginDate = timeStringToDate(guardData.Begin());
+            const endDate = timeStringToDate(guardData.End());
+
+            Globalize.locale(currentLangCode);
+            const formatTime = Globalize.dateFormatter({ time: 'short' });
+
+            return `${formatTime(beginDate)} - ${formatTime(endDate)}`;
+        };
+
+        /** Dopočítání výšky obalu hlaviček hodin */
+        self.HoursWrapperHeight = ko.computed(() => {
+            var overlayExists = self.TimetableData.Hours()?.some(x => x.StackLevel() > 0) ?? false;
+
+            if (!overlayExists && self.IsFreeModule) {
+                return 'calc(2.5rem + 0.8vw)';
+            }
+
+            const height = overlayExists
+                ? (self.IsFreeModule ? 5.625 : 4)
+                : (self.IsFreeModule ? '' : 2);
+
+            return height === '' ? '' : `${height}rem`;
+        })
+
+        /** Získá css classu dle druhu změny v rozvrhu */
+        self.GetInfoChangeCodeClass = (infoChangeCode, originalTeacherCodeSameAsLoggedIn) => {
+
+            //Pokud se jedná o suplovanou hodinu přihlášeného uživatele, tak hodinu zobrazím jako odebranou
+            if (infoChangeCode === 1 && originalTeacherCodeSameAsLoggedIn) return "removed";
+
+            switch (infoChangeCode) {
+                case 0:
+                    return "canceled";
+                case 1:
+                    return "substitution";
+                case 2:
+                    return "noChanged";
+                case 3:
+                    return "added";
+                case 4:
+                    return "roomChanged";
+                case 5:
+                    return "removed";
+                default:
+                    return "";
+            }
+        }
+
+        /**
+         * Získá css classu druhu změny hodiny
+         * Zatím odlišuji pouze zrušené a odebrané hodiny, které jsou zobrazeny přerušovaným borderem.
+         * Ostatní beze změny.
+         * @param {number} changeType - druhu změny
+         */
+        self.GetChangeTypeClass = (changeType) => {
+            switch (changeType) {
+                case 17:
+                case 15:
+                case 24:
+                case 11:
+                    return "canceled";
+                case 7:
+                case 21:
+                case 22:
+                case 23:
+                    return "removed";
+                case 18:
+                case 19:
+                case 20:
+                case 6:
+                    //return "added";
+                case 0:
+                case 1:
+                    //return "noChanged";
+                case 2:
+                case 3:
+                case 4:
+                case 5:
+                case 8:
+                case 9:
+                case 12:
+                case 16:
+                default:
+                    return ""
+            }
+        }
+
+        /** Vrací čas ve formátu H:mm */
+        self.FormattedTime = (time) => {
+            if (!time) return "";
+
+            const now = new Date(); // aktuální datum a čas
+            // Vytvoř časový objekt
+            const [hours, minutes, seconds] = time.split(":").map(Number);
+            const date = new Date(
+                now.getFullYear(),
+                now.getMonth(),
+                now.getDate(),
+                hours,
+                minutes,
+                seconds || 0
+            );
+
+            Globalize.locale(currentLangCode);
+
+            // Zformátuj pouze čas
+            const formatTime = Globalize.dateFormatter({ time: "short" });
+            return formatTime(date);
+        }
+
+        /**
+         * Detekuje překrývající se atomy a přiřadí jim stack level pro odsazení.
+         * @param {Array} hours - seznam hodin v jednom dni
+         */
+        function assignStackLevels(hours) {
+            // Sběr všech atomů v daném dni
+            let atoms = [];
+            hours?.forEach((hour, hourIndex) => {
+                hour.Atoms?.forEach(atom => {
+                    atoms.push({
+                        atom: atom,
+                        begin: atom.Begin,
+                        end: atom.End,
+                        hourIndex: hourIndex
+                    });
+                });
+            });
+
+            // Seřazení podle začátku
+            atoms.sort((a, b) => a.begin.localeCompare(b.begin));
+
+            // Pole, kde index je stack level a hodnota je end čas posledního atomu na tomto levelu
+            let levels = [];
+
+            atoms.forEach(item => {
+                // Najdi první volný stack level
+                let assigned = false;
+                for (let i = 0; i < levels.length; i++) {
+                    if (item.begin >= levels[i]) {
+                        levels[i] = item.end;
+                        item.atom.StackLevel = i;
+                        assigned = true;
+                        break;
+                    }
+                }
+                if (!assigned) {
+                    // Nový stack level
+                    levels.push(item.end);
+                    item.atom.StackLevel = levels.length - 1;
+                }
+            });
+        }
+    }
+
+    var timetableContentModel = new TimetableContent();
+
+    $(() => {
+        ko.applyBindings(timetableContentModel, document.getElementById("_timetableContent"));
+        ActionsOnContentReady();
+    });
+</script>
+
+<div id="_timetableContent" data-bind="visible: true" style="display: none;">
+    <div id="main" class="bk-timetable-main px-sm-2 px-md-3 px-lg-4 pt-4" translate="no" data-bind="with: TimetableData">
+        <div class="bk-timetable-hours-wrapper d-flex" data-bind="style: { height: ShowTimeline() ? '1.625rem' : $root.HoursWrapperHeight }">
+            <div class="bk-timetable-dayEmptyPlace"></div>
+            <!-- ko if: ShowTimeline -->
+            <div class="hour-raster-wrapper" data-bind="foreach: Raster">
+                <span class="raster-item" data-bind="css: { fullHour: IsFullHour() }, attr: {'data-time': Time()}, style: { left: CssX, width: CssWidth } ">
+                    <span class="raster-time" data-bind="text: $root.FormattedTime($data.Time())"></span>
+                </span>
+            </div>
+            <!-- /ko-->
+            <!-- ko ifnot: ShowTimeline -->
+            <div class="bk-timetable-hours" data-bind="foreach: Hours" style="width: 100%;">
+                <div class="bk-hour-wrapper" style="position: absolute;" data-bind="css: { nextLayer: StackLevel() === 1 }, style: { left: CssX, width: CssWidth }">
+                    <div class="num" data-bind="text: Caption"></div>
+                    <div class="hour">
+                        <span class="left" data-bind="text: BeginTime"></span>
+                        <span class="right" data-bind="text: EndTime"></span>
+                    </div>
+                </div>
+            </div>
+            <!-- /ko-->
+        </div>
+        <div class="bk-timetable-days-wrapper" data-bind="foreach: Days">
+            <div class="d-flex flex-row bk-timetable-row">
+                <div class="bk-timetable-day day-name">
+                    <div class="bk-day-wrapper">
+                        <div>
+                            <span class="bk-day-day" data-bind="text: DayAbbrev"></span>
+                            <span class="bk-day-date" data-bind="text: Date"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bk-cell-wrapper">
+                    <!-- ko if: DayOff -->
+                    <div class="bk-timetable-cell" data-testid="timetable-day-off">
+                        <div class="day-item-volno">
+                            <div class="dayoff-badge">V</div>
+                            <div class="dayoff-content">
+                                <span class="dayoff-name" data-bind="text: DayOffName() ? DayOffName().charAt(0).toUpperCase() + DayOffName().slice(1) : ''"></span>
+                                <span>Volno</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /ko-->
+                    <div class="raster-wrapper" data-bind="foreach: $parent.Raster, css: {'showTimeline': $parent.ShowTimeline()}">
+                        
+                        <div class="h-100 position-absolute raster-item" data-bind="style: { left: CssX, width: CssWidth }, css: { fullHour: IsFullHour()}"></div>
+                    </div>
+                    <!-- ko ifnot: DayOff -->
+                    <!-- ko ifnot: $parent.ShowTimeline -->
+                    <div data-bind="foreach: $parent.Hours">
+                        
+                        <div class="hour-lines" data-bind="style: { left: CssX, width: CssWidth }"></div>
+                    </div>
+                    <!-- /ko-->
+                    <div data-bind="foreach: Hours" class="d-flex">
+                        <div class="bk-timetable-cell">
+                            <!-- ko if: Type() === 'atoms' -->
+                            <div class="day-item">
+                                <div data-bind="foreach: Atoms">
+                                    <!-- ko if: Type() === "atom" -->
+                                    <!-- ko if: $root.DisplayAtomAsRemoved($data) -->
+                                    <div class="day-item h-100" data-testid="timetable-day-item">
+                                        <div class="day-item-hover position-absolute" data-bind="css: { hasChange: HasChanged(), hasAbsent: HasAbsent() },
+                                             attr: { 'data-detail': TooltipDetails }, style: { left: CssX, width: CssWidth }" data-testid="timetable-day-item-asRemoved">
+                                            <div class="day-flex">
+                                                <div class="top clearfix"></div>   <!--kvůli zarovnání-->
+                                                <!--Když není v buňce zobrazen text, vkládám tam neviditelnou stringovou konstantu, aby zůstala stejná výška-->
+                                                <div class="middle" data-bind="text: $root.DisplayAbsentInfo() ? AtomAbsenceText() : $root.BigChar, style: { visibility: $root.DisplayAbsentInfo() ? 'visible' : 'hidden' }"></div>
+                                                <div class="bottom"></div> <!--kvůli zarovnání-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /ko-->
+                                    <!-- ko ifnot: $root.DisplayAtomAsRemoved($data) -->
+                                    <div class="day-item-hover position-absolute" data-bind="css: Object.assign({ [$root.GetInfoChangeCodeClass($data.InfoChangeCode(), $data.OriginalTeacherCodeSameAsLoggedIn())]: true }, { [$root.GetChangeTypeClass($data.ChangeType())]: true }, { hasChange: HasChanged(), hasAbsent: HasAbsent() && !HasChanged(), released: StudentReleased(), new: NewAtom() }),
+                                         attr: { 'data-detail': TooltipDetails }, style: { 'background-color': true ? '#F0F7FA' : SubjectColor(), left: CssX, width: CssWidth }" data-testid="timetable-day-item-hover">
+                                        
+                                        <div class="day-flex">
+                                            <div class="top">
+                                                <div class="left top-hide">
+                                                    <!-- ko if: $root.ShowGroups() -->
+                                                    <div class="groups-names" data-bind="safeHtml: GroupsNames"></div>
+                                                    <!-- /ko-->
+                                                    <!-- ko if: WithAssistance -->
+                                                    <div class="assitantIco ico20-rozvrh-rukaRovneR bk-font-20" style="transform: scaleX(-1); text-align: end;"></div>
+                                                    <!-- /ko-->
+                                                </div>
+                                                <div class="right top-hide">
+                                                    <!-- ko if: $root.ShowRooms() && !IsDistanceTeaching() && !IsSelfStudy() -->
+                                                    <div class="first" data-bind="text: Room"></div>
+                                                    <!-- /ko-->
+                                                    <!-- ko if: IsLastRoomLesson -->
+                                                    <div class="bk-font-20 ico20-tridniKniha-klic" title="Posledn&#237; hodina v m&#237;stnosti"></div>
+                                                    <!-- /ko-->
+                                                </div>
+                                            </div>
+                                            <div class="middle">
+                                                <div data-bind="text: SubjectAbbrev"></div>
+                                                <!-- ko if: CycleText -->
+                                                <div class="cycle mt-1" data-bind="text: CycleText"></div>
+                                                <!-- /ko-->
+                                                <!-- ko if: StudentReleased() -->
+                                                <div class="change-badge released-badge" title="Ž&#225;k se ne&#250;častn&#237; v&#253;uky">U</div>
+                                                <!-- /ko-->
+                                                <!-- ko if: (HasChanged() || NewAtom()) && !StudentReleased() -->
+                                                <div class="change-badge" data-bind="css: { 'change-badge': HasChanged(), 'newHour-badge': NewAtom() }, text: $data.BadgeChar"></div>
+                                                <!-- /ko-->
+                                                <!-- ko if: $root.ShowTeachers() -->
+                                                <span class="teacher-name" data-bind="text: Teacher"></span>
+                                                <!-- /ko-->
+                                            </div>
+                                            <div class="bottom d-flex">
+                                                <div class="badges-wrapper">
+                                                    <!-- ko if: IsDistanceTeaching -->
+                                                    <div class="hour-badge distanceTeachingIco" title="Distančn&#237; v&#253;uka">
+                                                        <span>D</span>
+                                                    </div>
+                                                    <!-- /ko-->
+                                                    <!-- ko if: HomeworksCount() !== 0 -->
+                                                    <div class="hour-badge homeworkIco" title="Dom&#225;c&#237; &#250;kol">
+                                                        <span>U</span>
+                                                    </div>
+                                                    <!-- /ko-->
+                                                    <!-- ko if: IsSelfStudy -->
+                                                    <div class="hour-badge selfStudyIco" title="Samostudium">
+                                                        <span>S</span>
+                                                    </div>
+                                                    <!-- /ko-->
+                                                    <!-- ko if: HasPlannedClassification -->
+                                                    <div class="hour-badge plannedClassificationIco" title="Pl&#225;novan&#225; klasifikace">
+                                                        <span>K</span>
+                                                    </div>
+                                                    <!-- /ko-->
+                                                    <!-- ko if: StudentAbsence() != null && StudentAbsence() != 'NoAbsent' -->
+                                                    <div class="hour-badge absence" data-bind="css: `_${StudentAbsence()}`"></div>
+                                                    <!-- /ko -->
+                                                    <!-- ko if: Theme() && Theme() !== '' -->
+                                                    <div class="hour-badge hasThemeIco" data-bind="css: {'ml-auto': StudentAbsence() == null && StudentAbsence() != 'NoAbsent'}" title="Zaps&#225;no"></div>
+                                                    <!-- /ko-->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /ko-->
+                                    <!-- /ko-->
+                                    <!-- ko if: Type() === 'removed' -->
+                                    
+                                    <div class="day-item-hover position-absolute removed" data-bind="attr: { 'data-detail': TooltipDetails },
+                                             style: { left: CssX, width: CssWidth }, css: { hasChange: HasChanged() }" data-testid="timetable-day-item-removed">
+                                        <div class="day-flex">
+                                            <div class="middle">
+                                                <!-- ko if: Type() === 'removed' -->
+                                                <div class="change-badge">O</div>
+                                                <!-- /ko-->
+                                                <div data-bind="text: $root.DisplayAbsentInfo() ? AtomAbsenceText() : ''"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /ko-->
+                                </div>
+                            </div>
+                            <!-- /ko-->
+                        </div>
+                    </div>
+                    
+                    <div data-bind="foreach: PauseGuards">
+                        <div class="bk-timetable-guard bk-timetable-pauseGuard" data-bind="style: { left: CssX, width: CssWidth }, attr: { 'data-detail': TooltipDetails }, css: { hasChange: Info() != '' }">
+                            <span class="withName" data-bind="text: Abbrev"></span>
+                        </div>
+                    </div>
+                    
+                    <div data-bind="foreach: HourGuards">
+                        <div class="bk-timetable-guard bk-timetable-hourGuard" data-bind="style: { left: CssX, width: CssWidth }, attr: { 'data-detail': TooltipDetails }, css: { hasChange: Info() != '' }">
+                            <span class="withName" data-bind="text: Name"></span>
+                        </div>
+                    </div>
+                    
+                    <div data-bind="foreach: GeneralGuards">
+                        <div class="bk-timetable-guard bk-timetable-generalGuard" data-bind="style: { left: CssX, width: CssWidth }, attr: { 'data-detail': TooltipDetails }, css: { hasChange: Info() != '' }">
+                            <span class="withName" data-bind="text: Name"></span>
+                            <span class="withName-time" data-bind="text: $root.GetGuardTimeSpan($data)"></span>
+                        </div>
+                    </div>
+                    
+                    <div data-bind="foreach: Absences">
+                        <div class="bk-timetable-absence" data-testid="timetable-day-item-absent" data-bind="style: { left: CssX, width: CssWidth }, attr: { 'data-detail': TooltipDetails }, css: { supervision: IsSupervision() }">
+                            <div class="bk-timetable-absence-contentWrapper">
+                                <div class="absent-badge" data-bind="text: IsSupervision() ? 'N' : 'A'"></div>
+                                <div data-bind="text: AbsentKind.Abbrev()"></div>
+                                <div class="hour-badge" data-bind="css: `_${StudentAbsenceKind()}`"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /ko-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <span data-bind="css: ShowBakaLogo() ? 'd-flex' : 'd-none d-print-flex'"
+          class="py-3 pr-lg-4 bk-system-baka float-right align-items-center ml-auto">
+        Provozov&#225;no na syst&#233;mu
+        <img src="/bakaweb/next/images/logos/bakalari-logo.svg" width="109" height="22" />
+    </span>
+</div>
+
+    </div>
+
+</body>
+</html>
