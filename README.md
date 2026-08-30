@@ -1,8 +1,10 @@
-<img src="assets/lazybaka.png" width="320">
+<img src="assets/lazybaka.png" align="left" width="260">
 
 <samp>One-way sync from a public Bakaláři timetable into a dedicated Google
 Calendar. Scrape, diff, apply, on an interval. Only events it created itself
 are ever touched.</samp>
+
+<br clear="left">
 
 ---
 
