@@ -20,6 +20,6 @@ rustPlatform.buildRustPackage {
     description = "One-way sync from a public Bakalari timetable to a dedicated Google Calendar";
     license = lib.licenses.mit;
     mainProgram = "bakasync";
-    platforms = lib.platforms.linux;
+    platforms = lib.platforms.unix;
   };
 }

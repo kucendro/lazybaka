@@ -409,10 +409,7 @@ mod tests {
             .unwrap();
         assert_eq!(first.subject, "Opera\u{10d}n\u{ed} syst\u{e9}my");
         assert_eq!(first.room.as_deref(), Some("A005"));
-        assert_eq!(
-            first.teacher.as_deref(),
-            Some("Mgr. Michal Va\u{10d}k\u{e1}\u{159}")
-        );
+        assert_eq!(first.teacher.as_deref(), Some("Mgr. Filip Bene\u{161}"));
         assert_eq!(first.start, at(24, 8, 0));
         assert_eq!(first.end, at(24, 8, 45));
     }
@@ -520,5 +517,65 @@ mod tests {
         let lesson = &merge(page.lessons, 25)[0];
         assert!(!lesson.summary().contains('\u{26a0}'));
         assert!(lesson.description().contains(" | "));
+    }
+
+    fn live_target() -> Option<(String, String, Option<String>)> {
+        let _ = dotenvy::from_filename(".env.local");
+        let _ = dotenvy::dotenv();
+        let set = |key: &str| {
+            std::env::var(key)
+                .ok()
+                .map(|value| value.trim().to_string())
+                .filter(|value| !value.is_empty())
+        };
+        Some((
+            set("BAKASYNC_BASE_URL")?.trim_end_matches('/').to_string(),
+            set("BAKASYNC_CLASS_ID")?,
+            set("BAKASYNC_EXPECTED_CLASS_NAME"),
+        ))
+    }
+
+    #[tokio::test]
+    async fn live_page_still_parses() {
+        let Some((base, class, expected)) = live_target() else {
+            eprintln!(
+                "skipping the live check: set BAKASYNC_BASE_URL and BAKASYNC_CLASS_ID in .env.local"
+            );
+            return;
+        };
+        let url = format!("{base}/Timetable/Public/Actual/Class/{class}");
+        let html = reqwest::Client::builder()
+            .user_agent(concat!("bakasync-test/", env!("CARGO_PKG_VERSION")))
+            .timeout(std::time::Duration::from_secs(30))
+            .build()
+            .unwrap()
+            .get(&url)
+            .send()
+            .await
+            .unwrap_or_else(|error| panic!("{url}: {error}"))
+            .error_for_status()
+            .unwrap_or_else(|error| panic!("{url}: {error}"))
+            .text()
+            .await
+            .unwrap_or_else(|error| panic!("{url}: {error}"));
+
+        let today = chrono::Utc::now().with_timezone(&TZ).date_naive();
+        let page = parse_page(&html, today).unwrap_or_else(|error| panic!("{url}: {error:#}"));
+
+        assert!(
+            page.class_name.is_some(),
+            "{url}: no class name on the page, the class id is probably stale"
+        );
+        if let Some(expected) = expected {
+            assert_eq!(page.class_name.as_deref(), Some(expected.as_str()), "{url}");
+        }
+        assert_eq!(page.stats.unparsed, 0, "{url}: some atoms did not parse");
+        for lesson in &page.lessons {
+            assert!(lesson.end > lesson.start, "{url}: {lesson:?}");
+            assert!(
+                page.known_days.contains(&lesson.start.date()),
+                "{url}: {lesson:?} falls outside the published days"
+            );
+        }
     }
 }

@@ -37,8 +37,7 @@ impl Config {
             }
         };
         let cfg = Config {
-            base_url: optional("BAKASYNC_BASE_URL")
-                .unwrap_or_else(|| "https://bakalari.spse.cz/bakaweb".to_string())
+            base_url: required("BAKASYNC_BASE_URL")?
                 .trim_end_matches('/')
                 .to_string(),
             class_id: required("BAKASYNC_CLASS_ID")?,

@@ -203,6 +203,7 @@ fn load_env() -> Result<()> {
             dotenvy::from_path(path.trim()).with_context(|| format!("loading env file {path}"))?;
         }
         _ => {
+            let _ = dotenvy::from_filename(".env.local");
             let _ = dotenvy::dotenv();
         }
     }

@@ -34,7 +34,7 @@ in
 
     baseUrl = lib.mkOption {
       type = lib.types.str;
-      default = "https://bakalari.spse.cz/bakaweb";
+      example = "https://bakalari.example.cz/bakaweb";
       description = "Root of the Bakalari web application.";
     };
 

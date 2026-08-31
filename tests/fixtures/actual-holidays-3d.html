@@ -144,7 +144,7 @@
     {{/if}}
     {{if (room || "" != "")}}
     <span class="line mb-1">
-        <span class="bubble-label">M&#237;stnost:</span>
+        <span class="bubble-label">Místnost:</span>
         <span class="bubble-value">{{:room}}</span>
     </span>
     {{/if}}
@@ -156,13 +156,13 @@
     {{/if}}
     {{if (theme||""!="")}}
     <span class="line mb-1">
-        <span class="bubble-label">T&#233;ma:</span>
+        <span class="bubble-label">Téma:</span>
         <span class="bubble-value">{{:theme}}</span>
     </span>
     {{/if}}
     {{if (notice||""!="")}}
     <span class="line mb-1">
-        <span class="bubble-label">Pozn&#225;mka:</span>
+        <span class="bubble-label">Poznámka:</span>
         <span class="bubble-value">{{:notice}}</span>
     </span>
     {{/if}}
@@ -191,7 +191,7 @@
     {{if IsLastRoomLesson}}
     <span class="line mb-1">
         <span class="bubble-label">Zamknout:</span>
-        <span class="bubble-value d-table-row"><i class="ico20-tridniKniha-klic bk-font-20 mr-1 align-middle"></i>Posledn&#237; hodina v m&#237;stnosti</span>
+        <span class="bubble-value d-table-row"><i class="ico20-tridniKniha-klic bk-font-20 mr-1 align-middle"></i>Poslední hodina v místnosti</span>
     </span>
     {{/if}}
     {{if (changeinfo)}}
@@ -202,7 +202,7 @@
     {{/if}}
     {{if (homeworks && homeworks.length != 0)}}
     <span class="line mb-1">
-        <span class="bubble-label">Dom&#225;c&#237; &#250;kol:</span>
+        <span class="bubble-label">Domácí úkol:</span>
         <span class="bubble-homeworks-wrapper d-table-row">
             <i class="homeworkIco mr-1 d-inline-flex justify-content-center align-items-center">U</i>
             <span class="d-table-cell">
@@ -227,7 +227,7 @@
     {{/if}}
     {{if (absencetext)}}
     <span class="line mb-1">
-        <span class="bubble-label">Doch&#225;zka:</span>
+        <span class="bubble-label">Docházka:</span>
         <span class="bubble-value d-table-row"><i class="absenceTypeIcon {{:absenceType}}"></i>{{:absencetext}}</span>
     </span>
     {{/if}}
@@ -250,7 +250,7 @@
     </div>
     {{if (notice||""!="")}}
     <span class="line mb-1">
-        <span class="bubble-label">Pozn&#225;mka:</span>
+        <span class="bubble-label">Poznámka:</span>
         <span class="bubble-value">{{:notice}}</span>
     </span>
     {{/if}}
@@ -281,7 +281,7 @@
     </div>
     {{if (notice||""!="")}}
     <span class="line mb-1">
-        <span class="bubble-label">Pozn&#225;mka:</span>
+        <span class="bubble-label">Poznámka:</span>
         <span class="bubble-value">{{:notice}}</span>
     </span>
     {{/if}}
@@ -325,13 +325,13 @@
     <!--End page specific -->
 
         <!--Google Analytics-->
-        <script async type="text/plain" data-cookiecategory="analytics" src="https://www.googletagmanager.com/gtag/js?id=G-JJ74ZPC651"></script>
+        <script async type="text/plain" data-cookiecategory="analytics" src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
         <script type="text/plain" data-cookiecategory="analytics">
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
         gtag('set', {"user_id":"5918","dimension1":"none","dimension2":"2.2.826.2","dimension3":"5918","app_version":"2.2.826.2","app_name":"cz.bakalari.web","user_properties":{"user_type":"none","app_version":"2.2.826.2","evnumber":"5918"},"page_path":"/Timetable/Public/ActualClass"});
-        gtag('config', 'G-JJ74ZPC651');
+        gtag('config', 'G-XXXXXXXXXX');
         </script>
         <!-- End Google Analytics -->
     
@@ -359,11 +359,11 @@
         <div class="container-fluid bk-timetable-header">
                 <div class="d-flex">
                     <div class="w-100">
-                            <div class="bk-header-caption">Středn&#237; průmyslov&#225; škola elektrotechnick&#225; a Vyšš&#237; odborn&#225; škola Pardubice</div>
+                            <div class="bk-header-caption">Střední průmyslová škola a Vyšší odborná škola</div>
 
                             <div class="bk-timetable-selects row mb-1 mt-1">
                                     <div class="d-inline-flex m-1 mr-2 position-relative ico32-ovladani-smerovkaDolu">
-                                        <span class="bk-timetable-label pl-0">Tř&#237;da</span>
+                                        <span class="bk-timetable-label pl-0">Třída</span>
                                         <select id="selectedClass" class="custom-select" onchange="changeClass()">
                                             <option></option>
                                                 <option value="3M"
@@ -556,447 +556,11 @@
                                                                     <div class="d-inline-flex m-1 mr-2 position-relative ico32-ovladani-smerovkaDolu">
                                         <span class="bk-timetable-label">Učitel</span>
                                         <select id="selectedTeacher" class="custom-select" onchange="changeTeacher()">
-                                            <option></option>
-                                                <option value="UVORT"
-                                                        >
-                                                    Ad&#225;mek Libor
-                                                </option>
-                                                <option value="UZOSM"
-                                                        >
-                                                    Andrle Marcel
-                                                </option>
-                                                <option value="UQOQ4"
-                                                        >
-                                                    Bajer Libor
-                                                </option>
-                                                <option value="UZON6"
-                                                        >
-                                                    Bakl&#237;kov&#225; Ivona
-                                                </option>
-                                                <option value="UPOPC"
-                                                        >
-                                                    B&#225;rta Čestm&#237;r
-                                                </option>
-                                                <option value="UEMKE"
-                                                        >
-                                                    Bartel Jaroslav
-                                                </option>
-                                                <option value="UROQO"
-                                                        >
-                                                    Bartoš Petr
-                                                </option>
-                                                <option value="U0080"
-                                                        >
-                                                    Bednař&#237;kov&#225; Lea
-                                                </option>
-                                                <option value="UUORO"
-                                                        >
-                                                    Bouškov&#225; Pavl&#237;na
-                                                </option>
-                                                <option value="UXOS5"
-                                                        >
-                                                    Braun Martin
-                                                </option>
-                                                <option value="UJONA"
-                                                        >
-                                                    Bub&#225;k Petr
-                                                </option>
-                                                <option value="UXOS7"
-                                                        >
-                                                    Budina Martin
-                                                </option>
-                                                <option value="UY5HV"
-                                                        >
-                                                    Budina Petr
-                                                </option>
-                                                <option value="UZON1"
-                                                        >
-                                                    Budinov&#225; Eva
-                                                </option>
-                                                <option value="U0108"
-                                                        >
-                                                    Cach Zdeněk
-                                                </option>
-                                                <option value="USORB"
-                                                        >
-                                                    Cerman Luděk
-                                                </option>
-                                                <option value="UOONP"
-                                                        >
-                                                    Č&#225;p Pavel
-                                                </option>
-                                                <option value="UQOPV"
-                                                        >
-                                                    Čechlovsk&#225; Dagmar
-                                                </option>
-                                                <option value="U  52"
-                                                        >
-                                                    Černoch Milan
-                                                </option>
-                                                <option value="UZOSN"
-                                                        >
-                                                    Daleck&#225; Eva
-                                                </option>
-                                                <option value="UZOSP"
-                                                        >
-                                                    Dočkal Pavel
-                                                </option>
-                                                <option value="UOOP2"
-                                                        >
-                                                    Dus Ren&#233;
-                                                </option>
-                                                <option value="UQOPW"
-                                                        >
-                                                    Dvoř&#225;kov&#225; Jana
-                                                </option>
-                                                <option value="UWORZ"
-                                                        >
-                                                    Fereš Pavel
-                                                </option>
-                                                <option value="UTVCG"
-                                                        >
-                                                    Fišar Petr
-                                                </option>
-                                                <option value="UOONS"
-                                                        >
-                                                    Han&#225;kov&#225; Vladim&#237;ra
-                                                </option>
-                                                <option value="UZOMX"
-                                                        >
-                                                    Hejna Petr
-                                                </option>
-                                                <option value="USOQW"
-                                                        >
-                                                    Hrabaň V&#225;clav
-                                                </option>
-                                                <option value="UQOPX"
-                                                        >
-                                                    Hradsk&#253; Pavel
-                                                </option>
-                                                <option value="UOOO6"
-                                                        >
-                                                    Hrnč&#237;ř Petr
-                                                </option>
-                                                <option value="U  12"
-                                                        >
-                                                    Hron Vladim&#237;r
-                                                </option>
-                                                <option value="UOONR"
-                                                        >
-                                                    Hůlka Vladim&#237;r
-                                                </option>
-                                                <option value="UOOOC"
-                                                        >
-                                                    Hurda Jan
-                                                </option>
-                                                <option value="U0OSS"
-                                                        >
-                                                    Hušek Petr
-                                                </option>
-                                                <option value="UOONV"
-                                                        >
-                                                    Hypšmanov&#225; Dobromila
-                                                </option>
-                                                <option value="UQOQ3"
-                                                        >
-                                                    Chvojka Matěj
-                                                </option>
-                                                <option value="UYOSJ"
-                                                        >
-                                                    Janda Tom&#225;š
-                                                </option>
-                                                <option value="UQOPY"
-                                                        >
-                                                    Jedličkov&#225; Alena
-                                                </option>
-                                                <option value="UMVMU"
-                                                        >
-                                                    Jel&#237;nek Radek
-                                                </option>
-                                                <option value="UQOPZ"
-                                                        >
-                                                    Jelinkov&#225; Jaroslava
-                                                </option>
-                                                <option value="U0YJ2"
-                                                        >
-                                                    Jič&#237;nsk&#253; Tom&#225;š
-                                                </option>
-                                                <option value="UUORL"
-                                                        >
-                                                    Jir&#225;sek Lubom&#237;r
-                                                </option>
-                                                <option value="UZOM7"
-                                                        >
-                                                    Jirka Miroslav
-                                                </option>
-                                                <option value="UOONU"
-                                                        >
-                                                    Jiroutov&#225; Kateřina
-                                                </option>
-                                                <option value="U  23"
-                                                        >
-                                                    Joz&#237;fov&#225; Irena
-                                                </option>
-                                                <option value="USOR2"
-                                                        >
-                                                    Kašpar Vladim&#237;r
-                                                </option>
-                                                <option value="U0OSW"
-                                                        >
-                                                    Kmoch Petr
-                                                </option>
-                                                <option value="UVORV"
-                                                        >
-                                                    Knotek Jan
-                                                </option>
-                                                <option value="UOOP8"
-                                                        >
-                                                    Kopeck&#253; Zbyněk
-                                                </option>
-                                                <option value="UMONI"
-                                                        >
-                                                    Kouck&#253; Miroslav
-                                                </option>
-                                                <option value="U0OSR"
-                                                        >
-                                                    Koz&#225;kov&#225; Denisa
-                                                </option>
-                                                <option value="UXOSA"
-                                                        >
-                                                    Kratochv&#237;l Jan
-                                                </option>
-                                                <option value="UWOS3"
-                                                        >
-                                                    Křivkov&#225; Lucie
-                                                </option>
-                                                <option value="UOOO1"
-                                                        >
-                                                    Kubelka Aleš
-                                                </option>
-                                                <option value="U  24"
-                                                        >
-                                                    Kudrna Ivan
-                                                </option>
-                                                <option value="UWOS1"
-                                                        >
-                                                    Kupka Libor
-                                                </option>
-                                                <option value="U7TVP"
-                                                        >
-                                                    Kvasničkov&#225; Alena
-                                                </option>
-                                                <option value="UOONZ"
-                                                        >
-                                                    Kverek Česlav
-                                                </option>
-                                                <option value="USOR3"
-                                                        >
-                                                    Laubov&#225; Lenka
-                                                </option>
-                                                <option value="UYOSE"
-                                                        >
-                                                    L&#233;dlov&#225; Lucie
-                                                </option>
-                                                <option value="UZOM9"
-                                                        >
-                                                    Lev&#225; Gabriela
-                                                </option>
-                                                <option value="UNONK"
-                                                        >
-                                                    Ludv&#237;kov&#225; Jiřina
-                                                </option>
-                                                <option value="UMONF"
-                                                        >
-                                                    Michalec Milan
-                                                </option>
-                                                <option value="UE3DL"
-                                                        >
-                                                    Mikul&#225;š Petr
-                                                </option>
-                                                <option value="U0OSV"
-                                                        >
-                                                    Najmanov&#225; Lucie
-                                                </option>
-                                                <option value="UROQQ"
-                                                        >
-                                                    Nedbalov&#225; Štěp&#225;nka
-                                                </option>
-                                                <option value="UOOPA"
-                                                        >
-                                                    Neradov&#225; Soňa
-                                                </option>
-                                                <option value="USOR5"
-                                                        >
-                                                    Nosek Zdeněk
-                                                </option>
-                                                <option value="UZOM5"
-                                                        >
-                                                    Nov&#225; Jitka
-                                                </option>
-                                                <option value="UVORW"
-                                                        >
-                                                    Nov&#225;k Pavel
-                                                </option>
-                                                <option value="U0OSX"
-                                                        >
-                                                    Novotn&#253; Dominik
-                                                </option>
-                                                <option value="UTORI"
-                                                        >
-                                                    Orl&#237;ček Miloš
-                                                </option>
-                                                <option value="UOONY"
-                                                        >
-                                                    P&#225;calov&#225; Pavl&#237;na
-                                                </option>
-                                                <option value="UPOPK"
-                                                        >
-                                                    Panuška Ivan
-                                                </option>
-                                                <option value="UOONW"
-                                                        >
-                                                    Pap&#237;kov&#225; Marie
-                                                </option>
-                                                <option value="U0OST"
-                                                        >
-                                                    P&#225;sler Miroslav
-                                                </option>
-                                                <option value="U  33"
-                                                        >
-                                                    Petera Martin
-                                                </option>
-                                                <option value="U  10"
-                                                        >
-                                                    Pol&#225;čkov&#225; Danuše
-                                                </option>
-                                                <option value="UQOQ6"
-                                                        >
-                                                    Pol&#225;k Jiř&#237;
-                                                </option>
-                                                <option value="UTMBB"
-                                                        >
-                                                    Posp&#237;šilov&#225; Andrea
-                                                </option>
-                                                <option value="UZOMQ"
-                                                        >
-                                                    Př&#237;vratsk&#253; Zdeněk
-                                                </option>
-                                                <option value="UXOS8"
-                                                        >
-                                                    Psotkov&#225; Š&#225;rka
-                                                </option>
-                                                <option value="UOONQ"
-                                                        >
-                                                    Račick&#253; Slavom&#237;r
-                                                </option>
-                                                <option value="U0107"
-                                                        >
-                                                    Reslov&#225; Jana
-                                                </option>
-                                                <option value="USOR8"
-                                                        >
-                                                    Retka Tom&#225;š
-                                                </option>
-                                                <option value="UOOO8"
-                                                        >
-                                                    Rudolf Jiř&#237;
-                                                </option>
-                                                <option value="UROQM"
-                                                        >
-                                                    Řehounek Luboš
-                                                </option>
-                                                <option value="UBCDT"
-                                                        >
-                                                    Sobolov&#225; Zdeňka
-                                                </option>
-                                                <option value="UOOOL"
-                                                        >
-                                                    Strat&#237;lek Miloš
-                                                </option>
-                                                <option value="UZOSO"
-                                                        >
-                                                    Suk Petr
-                                                </option>
-                                                <option value="UROQN"
-                                                        >
-                                                    Svatoň Martin
-                                                </option>
-                                                <option value="UQOQ1"
-                                                        >
-                                                    Svoboda Jaroslav
-                                                </option>
-                                                <option value="UPOPN"
-                                                        >
-                                                    Šeda Petr
-                                                </option>
-                                                <option value="U  37"
-                                                        >
-                                                    Šilar Zdeněk
-                                                </option>
-                                                <option value="UZOSQ"
-                                                        >
-                                                    Štaudov&#225; Renata
-                                                </option>
-                                                <option value="UZOMP"
-                                                        >
-                                                    Štědr&#253; Luk&#225;š
-                                                </option>
-                                                <option value="USORD"
-                                                        >
-                                                    Štech Jan
-                                                </option>
-                                                <option value="UE5IF"
-                                                        >
-                                                    Štěp&#225;nek Ladislav
-                                                </option>
-                                                <option value="U  40"
-                                                        >
-                                                    Štver&#225;k Milan
-                                                </option>
-                                                <option value="UUORN"
-                                                        >
-                                                    Švec Radim
-                                                </option>
-                                                <option value="UWOS2"
-                                                        >
-                                                    Tisoň David
-                                                </option>
-                                                <option value="UWORX"
-                                                        >
-                                                    Trub&#225;k Zdeněk
-                                                </option>
-                                                <option value="UUORP"
-                                                        >
-                                                    Truncov&#225; Tereza
-                                                </option>
-                                                <option value="UYOSI"
-                                                        >
-                                                    Vačk&#225;ř Michal
-                                                </option>
-                                                <option value="UPOPI"
-                                                        >
-                                                    Věcek František
-                                                </option>
-                                                <option value="UZOMO"
-                                                        >
-                                                    Venzara Robert
-                                                </option>
-                                                <option value="UOOP9"
-                                                        >
-                                                    Zah&#225;lka Martin
-                                                </option>
-                                                <option value="U  62"
-                                                        >
-                                                    Zapletal Miroslav
-                                                </option>
-                                                <option value="UQOQ2"
-                                                        >
-                                                    Zeman Jaroslav
-                                                </option>
-                                        </select>
+<option></option>
+</select>
                                     </div>
                                                                     <div class="d-inline-flex m-1 mr-2 position-relative ico32-ovladani-smerovkaDolu">
-                                        <span class="bk-timetable-label">M&#237;stnost</span>
+                                        <span class="bk-timetable-label">Místnost</span>
                                         <select id="selectedRoom" class="custom-select" onchange="changeRoom()">
                                             <option></option>
                                                 <option value="0N"
@@ -1428,15 +992,15 @@
                                                                     <div class="d-inline-flex m-1 mr-2">
                                         <div class="btn-group btn-group-toggle bk-timetable-btngroup" data-toggle="buttons" id="selectedTerm" style="height: 28px;">
                                                 <label class="btn btn-secondary ">
-                                                    <input type="radio" name="options" id="option1" value="Permanent"  onchange="changeTerm()"> St&#225;l&#253;
+                                                    <input type="radio" name="options" id="option1" value="Permanent"  onchange="changeTerm()"> Stálý
                                                     </label>
                                                                                             <label class="btn btn-secondary   active
 ">
                                                     <input type="radio" name="options" id="option2" value="Actual"   checked="checked"
- onchange="changeTerm()"> Tento t&#253;den
+ onchange="changeTerm()"> Tento týden
                                                     </label>
                                                                                             <label class="btn btn-secondary ">
-                                                    <input type="radio" name="options" id="option3" value="Next"  onchange="changeTerm()"> Př&#237;št&#237; t&#253;den
+                                                    <input type="radio" name="options" id="option3" value="Next"  onchange="changeTerm()"> Příští týden
                                                     </label>
                                         </div>
                                     </div>
@@ -1449,10 +1013,10 @@
 
                             <div class="bk-timetable-selects row d-print-none">
                                     <div class="d-inline-flex m-1 mr-2 bk-timetable-class-teacher bk-timetable-label" data-testid="bk-timetable-class-teacher">
-                                        Tř&#237;dn&#237; učitel: Mgr. Martin Braun
+                                        Třídní učitel: Mgr. Emil Svoboda
                                     </div>
                                                                     <div class="d-inline-flex m-1 mr-2 bk-timetable-class-teacher bk-timetable-label" data-testid="bk-timetable-acting-class-teacher">
-                                        Zastupuj&#237;c&#237; tř&#237;dn&#237; učitel: Mgr. Radim Švec
+                                        Zastupující třídní učitel: Mgr. Radim Švec
                                     </div>
                             </div>
 
@@ -1466,17 +1030,17 @@
 
         <div class="container-fluid bk-timetable-header-print">
             <span class="bk-timetable-school">
-                Středn&#237; průmyslov&#225; škola elektrotechnick&#225; a Vyšš&#237; odborn&#225; škola Pardubice
+Střední průmyslová škola a Vyšší odborná škola
             </span>
 
                 <span class="bk-timetable-title">
                     3.D
                 </span>
                     <span class="bk-timetable-class-teacher" data-testid="bk-timetable-class-teacher">
-                        Tř&#237;dn&#237; učitel: Mgr. Martin Braun
+                        Třídní učitel: Mgr. Emil Svoboda
                     </span>
                     <span class="bk-timetable-class-teacher" data-testid="bk-timetable-acting-class-teacher">
-                        Zastupuj&#237;c&#237; tř&#237;dn&#237; učitel: Mgr. Radim Švec
+                        Zastupující třídní učitel: Mgr. Radim Švec
                     </span>
                                             </div>
 
@@ -1489,7 +1053,7 @@
                 <div class="bk-canvas-body">
                         <a href="/bakaweb/timetable/public/Actual/teacher/UVORT"
                            >
-                            <span>Ad&#225;mek Libor</span>
+                            <span>Adámek Cyril</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UZOSM"
                            >
@@ -1497,15 +1061,15 @@
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UQOQ4"
                            >
-                            <span>Bajer Libor</span>
+                            <span>Novák Cyril</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UZON6"
                            >
-                            <span>Bakl&#237;kov&#225; Ivona</span>
+                            <span>Baklíková Ivona</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UPOPC"
                            >
-                            <span>B&#225;rta Čestm&#237;r</span>
+                            <span>Procházka Cyril</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UEMKE"
                            >
@@ -1513,39 +1077,39 @@
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UROQO"
                            >
-                            <span>Bartoš Petr</span>
+                            <span>Bartoš Bohumil</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/U0080"
                            >
-                            <span>Bednař&#237;kov&#225; Lea</span>
+                            <span>Nováková Dana</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UUORO"
                            >
-                            <span>Bouškov&#225; Pavl&#237;na</span>
+                            <span>Svobodová Gabriela</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UXOS5"
                            >
-                            <span>Braun Martin</span>
+                            <span>Svoboda Emil</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UJONA"
                            >
-                            <span>Bub&#225;k Petr</span>
+                            <span>Bubák Bohumil</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UXOS7"
                            >
-                            <span>Budina Martin</span>
+                            <span>Dvořák Emil</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UY5HV"
                            >
-                            <span>Budina Petr</span>
+                            <span>Dvořák Bohumil</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UZON1"
                            >
-                            <span>Budinov&#225; Eva</span>
+                            <span>Budinová Eva</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/U0108"
                            >
-                            <span>Cach Zdeněk</span>
+                            <span>Cach Adam</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/USORB"
                            >
@@ -1553,11 +1117,11 @@
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UOONP"
                            >
-                            <span>Č&#225;p Pavel</span>
+                            <span>Čáp Pavel</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UQOPV"
                            >
-                            <span>Čechlovsk&#225; Dagmar</span>
+                            <span>Čechlovská Dagmar</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/U  52"
                            >
@@ -1565,7 +1129,7 @@
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UZOSN"
                            >
-                            <span>Daleck&#225; Eva</span>
+                            <span>Dalecká Eva</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UZOSP"
                            >
@@ -1573,11 +1137,11 @@
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UOOP2"
                            >
-                            <span>Dus Ren&#233;</span>
+                            <span>Dus René</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UQOPW"
                            >
-                            <span>Dvoř&#225;kov&#225; Jana</span>
+                            <span>Dvořáková Barbora</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UWORZ"
                            >
@@ -1585,35 +1149,35 @@
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UTVCG"
                            >
-                            <span>Fišar Petr</span>
+                            <span>Kučera Bohumil</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UOONS"
                            >
-                            <span>Han&#225;kov&#225; Vladim&#237;ra</span>
+                            <span>Hanáková Vladimíra</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UZOMX"
                            >
-                            <span>Hejna Petr</span>
+                            <span>Hejna Bohumil</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/USOQW"
                            >
-                            <span>Hrabaň V&#225;clav</span>
+                            <span>Hrabaň Václav</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UQOPX"
                            >
-                            <span>Hradsk&#253; Pavel</span>
+                            <span>Hradský Pavel</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UOOO6"
                            >
-                            <span>Hrnč&#237;ř Petr</span>
+                            <span>Hrnčíř Bohumil</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/U  12"
                            >
-                            <span>Hron Vladim&#237;r</span>
+                            <span>Hron Vojtěch</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UOONR"
                            >
-                            <span>Hůlka Vladim&#237;r</span>
+                            <span>Hůlka Vojtěch</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UOOOC"
                            >
@@ -1621,11 +1185,11 @@
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/U0OSS"
                            >
-                            <span>Hušek Petr</span>
+                            <span>Hušek Bohumil</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UOONV"
                            >
-                            <span>Hypšmanov&#225; Dobromila</span>
+                            <span>Hypšmanová Dobromila</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UQOQ3"
                            >
@@ -1633,27 +1197,27 @@
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UYOSJ"
                            >
-                            <span>Janda Tom&#225;š</span>
+                            <span>Horák David</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UQOPY"
                            >
-                            <span>Jedličkov&#225; Alena</span>
+                            <span>Jedličková Alena</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UMVMU"
                            >
-                            <span>Jel&#237;nek Radek</span>
+                            <span>Němec Ondřej</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UQOPZ"
                            >
-                            <span>Jelinkov&#225; Jaroslava</span>
+                            <span>Jelinková Jaroslava</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/U0YJ2"
                            >
-                            <span>Jič&#237;nsk&#253; Tom&#225;š</span>
+                            <span>Jičínský David</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UUORL"
                            >
-                            <span>Jir&#225;sek Lubom&#237;r</span>
+                            <span>Jirásek Lubomír</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UZOM7"
                            >
@@ -1661,19 +1225,19 @@
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UOONU"
                            >
-                            <span>Jiroutov&#225; Kateřina</span>
+                            <span>Jiroutová Kateřina</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/U  23"
                            >
-                            <span>Joz&#237;fov&#225; Irena</span>
+                            <span>Jozífová Irena</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/USOR2"
                            >
-                            <span>Kašpar Vladim&#237;r</span>
+                            <span>Marek Vojtěch</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/U0OSW"
                            >
-                            <span>Kmoch Petr</span>
+                            <span>Kmoch Bohumil</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UVORV"
                            >
@@ -1681,23 +1245,23 @@
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UOOP8"
                            >
-                            <span>Kopeck&#253; Zbyněk</span>
+                            <span>Kopecký Zbyněk</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UMONI"
                            >
-                            <span>Kouck&#253; Miroslav</span>
+                            <span>Koucký Miroslav</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/U0OSR"
                            >
-                            <span>Koz&#225;kov&#225; Denisa</span>
+                            <span>Kozáková Denisa</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UXOSA"
                            >
-                            <span>Kratochv&#237;l Jan</span>
+                            <span>Kratochvíl Jan</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UWOS3"
                            >
-                            <span>Křivkov&#225; Lucie</span>
+                            <span>Křivková Lucie</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UOOO1"
                            >
@@ -1705,15 +1269,15 @@
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/U  24"
                            >
-                            <span>Kudrna Ivan</span>
+                            <span>Kudrna Adam</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UWOS1"
                            >
-                            <span>Kupka Libor</span>
+                            <span>Kupka Cyril</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/U7TVP"
                            >
-                            <span>Kvasničkov&#225; Alena</span>
+                            <span>Kvasničková Alena</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UOONZ"
                            >
@@ -1721,19 +1285,19 @@
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/USOR3"
                            >
-                            <span>Laubov&#225; Lenka</span>
+                            <span>Laubová Lenka</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UYOSE"
                            >
-                            <span>L&#233;dlov&#225; Lucie</span>
+                            <span>Lédlová Lucie</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UZOM9"
                            >
-                            <span>Lev&#225; Gabriela</span>
+                            <span>Levá Gabriela</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UNONK"
                            >
-                            <span>Ludv&#237;kov&#225; Jiřina</span>
+                            <span>Ludvíková Jiřina</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UMONF"
                            >
@@ -1741,95 +1305,95 @@
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UE3DL"
                            >
-                            <span>Mikul&#225;š Petr</span>
+                            <span>Mikuláš Bohumil</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/U0OSV"
                            >
-                            <span>Najmanov&#225; Lucie</span>
+                            <span>Najmanová Lucie</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UROQQ"
                            >
-                            <span>Nedbalov&#225; Štěp&#225;nka</span>
+                            <span>Nedbalová Štěpánka</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UOOPA"
                            >
-                            <span>Neradov&#225; Soňa</span>
+                            <span>Neradová Soňa</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/USOR5"
                            >
-                            <span>Nosek Zdeněk</span>
+                            <span>Nosek Adam</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UZOM5"
                            >
-                            <span>Nov&#225; Jitka</span>
+                            <span>Nová Jitka</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UVORW"
                            >
-                            <span>Nov&#225;k Pavel</span>
+                            <span>Novák Pavel</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/U0OSX"
                            >
-                            <span>Novotn&#253; Dominik</span>
+                            <span>Novotný Dominik</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UTORI"
                            >
-                            <span>Orl&#237;ček Miloš</span>
+                            <span>Pospíšil Karel</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UOONY"
                            >
-                            <span>P&#225;calov&#225; Pavl&#237;na</span>
+                            <span>Pácalová Gabriela</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UPOPK"
                            >
-                            <span>Panuška Ivan</span>
+                            <span>Hájek Adam</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UOONW"
                            >
-                            <span>Pap&#237;kov&#225; Marie</span>
+                            <span>Papíková Marie</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/U0OST"
                            >
-                            <span>P&#225;sler Miroslav</span>
+                            <span>Pásler Miroslav</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/U  33"
                            >
-                            <span>Petera Martin</span>
+                            <span>Král Emil</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/U  10"
                            >
-                            <span>Pol&#225;čkov&#225; Danuše</span>
+                            <span>Poláčková Danuše</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UQOQ6"
                            >
-                            <span>Pol&#225;k Jiř&#237;</span>
+                            <span>Polák Jiří</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UTMBB"
                            >
-                            <span>Posp&#237;šilov&#225; Andrea</span>
+                            <span>Pospíšilová Andrea</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UZOMQ"
                            >
-                            <span>Př&#237;vratsk&#253; Zdeněk</span>
+                            <span>Růžička Adam</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UXOS8"
                            >
-                            <span>Psotkov&#225; Š&#225;rka</span>
+                            <span>Dvořáková Lenka</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UOONQ"
                            >
-                            <span>Račick&#253; Slavom&#237;r</span>
+                            <span>Račický Slavomír</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/U0107"
                            >
-                            <span>Reslov&#225; Jana</span>
+                            <span>Procházková Barbora</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/USOR8"
                            >
-                            <span>Retka Tom&#225;š</span>
+                            <span>Retka David</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UOOO8"
                            >
-                            <span>Rudolf Jiř&#237;</span>
+                            <span>Rudolf Jiří</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UROQM"
                            >
@@ -1837,19 +1401,19 @@
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UBCDT"
                            >
-                            <span>Sobolov&#225; Zdeňka</span>
+                            <span>Sobolová Zdeňka</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UOOOL"
                            >
-                            <span>Strat&#237;lek Miloš</span>
+                            <span>Stratílek Karel</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UZOSO"
                            >
-                            <span>Suk Petr</span>
+                            <span>Suk Bohumil</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UROQN"
                            >
-                            <span>Svatoň Martin</span>
+                            <span>Svatoň Emil</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UQOQ1"
                            >
@@ -1857,19 +1421,19 @@
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UPOPN"
                            >
-                            <span>Šeda Petr</span>
+                            <span>Šeda Bohumil</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/U  37"
                            >
-                            <span>Šilar Zdeněk</span>
+                            <span>Šilar Adam</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UZOSQ"
                            >
-                            <span>Štaudov&#225; Renata</span>
+                            <span>Štaudová Renata</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UZOMP"
                            >
-                            <span>Štědr&#253; Luk&#225;š</span>
+                            <span>Štědrý Lukáš</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/USORD"
                            >
@@ -1877,11 +1441,11 @@
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UE5IF"
                            >
-                            <span>Štěp&#225;nek Ladislav</span>
+                            <span>Štěpánek Ladislav</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/U  40"
                            >
-                            <span>Štver&#225;k Milan</span>
+                            <span>Štverák Milan</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UUORN"
                            >
@@ -1893,15 +1457,15 @@
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UWORX"
                            >
-                            <span>Trub&#225;k Zdeněk</span>
+                            <span>Trubák Adam</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UUORP"
                            >
-                            <span>Truncov&#225; Tereza</span>
+                            <span>Kučerová Hana</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UYOSI"
                            >
-                            <span>Vačk&#225;ř Michal</span>
+                            <span>Beneš Filip</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UPOPI"
                            >
@@ -1913,7 +1477,7 @@
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/UOOP9"
                            >
-                            <span>Zah&#225;lka Martin</span>
+                            <span>Zahálka Emil</span>
                         </a>
                         <a href="/bakaweb/timetable/public/Actual/teacher/U  62"
                            >
@@ -1930,7 +1494,7 @@
         <div id="class_canvas" class="bk-canvas">
             <div class="bk-canvas-content">
                 <div class="bk-canvas-header">
-                    <span class="bk-canvas-title">Zvolte tř&#237;du. . .</span>
+                    <span class="bk-canvas-title">Zvolte třídu. . .</span>
                     <span href="javascript:void(0)" class="closebtn ico32-ovladani-krizek" onclick="closeCanvas()"></span>
                 </div>
                 <div class="bk-canvas-body">
@@ -2126,7 +1690,7 @@
         <div id="room_canvas" class="bk-canvas">
             <div class="bk-canvas-content">
                 <div class="bk-canvas-header">
-                    <span class="bk-canvas-title">Zvolte m&#237;stnost. . .</span>
+                    <span class="bk-canvas-title">Zvolte místnost. . .</span>
                     <span href="javascript:void(0)" class="closebtn ico32-ovladani-krizek" onclick="closeCanvas()"></span>
                 </div>
                 <div class="bk-canvas-body">
@@ -2878,7 +2442,7 @@
                                                     <div class="first" data-bind="text: Room"></div>
                                                     <!-- /ko-->
                                                     <!-- ko if: IsLastRoomLesson -->
-                                                    <div class="bk-font-20 ico20-tridniKniha-klic" title="Posledn&#237; hodina v m&#237;stnosti"></div>
+                                                    <div class="bk-font-20 ico20-tridniKniha-klic" title="Poslední hodina v místnosti"></div>
                                                     <!-- /ko-->
                                                 </div>
                                             </div>
@@ -2888,7 +2452,7 @@
                                                 <div class="cycle mt-1" data-bind="text: CycleText"></div>
                                                 <!-- /ko-->
                                                 <!-- ko if: StudentReleased() -->
-                                                <div class="change-badge released-badge" title="Ž&#225;k se ne&#250;častn&#237; v&#253;uky">U</div>
+                                                <div class="change-badge released-badge" title="Žák se neúčastní výuky">U</div>
                                                 <!-- /ko-->
                                                 <!-- ko if: (HasChanged() || NewAtom()) && !StudentReleased() -->
                                                 <div class="change-badge" data-bind="css: { 'change-badge': HasChanged(), 'newHour-badge': NewAtom() }, text: $data.BadgeChar"></div>
@@ -2900,12 +2464,12 @@
                                             <div class="bottom d-flex">
                                                 <div class="badges-wrapper">
                                                     <!-- ko if: IsDistanceTeaching -->
-                                                    <div class="hour-badge distanceTeachingIco" title="Distančn&#237; v&#253;uka">
+                                                    <div class="hour-badge distanceTeachingIco" title="Distanční výuka">
                                                         <span>D</span>
                                                     </div>
                                                     <!-- /ko-->
                                                     <!-- ko if: HomeworksCount() !== 0 -->
-                                                    <div class="hour-badge homeworkIco" title="Dom&#225;c&#237; &#250;kol">
+                                                    <div class="hour-badge homeworkIco" title="Domácí úkol">
                                                         <span>U</span>
                                                     </div>
                                                     <!-- /ko-->
@@ -2915,7 +2479,7 @@
                                                     </div>
                                                     <!-- /ko-->
                                                     <!-- ko if: HasPlannedClassification -->
-                                                    <div class="hour-badge plannedClassificationIco" title="Pl&#225;novan&#225; klasifikace">
+                                                    <div class="hour-badge plannedClassificationIco" title="Plánovaná klasifikace">
                                                         <span>K</span>
                                                     </div>
                                                     <!-- /ko-->
@@ -2923,7 +2487,7 @@
                                                     <div class="hour-badge absence" data-bind="css: `_${StudentAbsence()}`"></div>
                                                     <!-- /ko -->
                                                     <!-- ko if: Theme() && Theme() !== '' -->
-                                                    <div class="hour-badge hasThemeIco" data-bind="css: {'ml-auto': StudentAbsence() == null && StudentAbsence() != 'NoAbsent'}" title="Zaps&#225;no"></div>
+                                                    <div class="hour-badge hasThemeIco" data-bind="css: {'ml-auto': StudentAbsence() == null && StudentAbsence() != 'NoAbsent'}" title="Zapsáno"></div>
                                                     <!-- /ko-->
                                                 </div>
                                             </div>
@@ -2986,7 +2550,7 @@
     </div>
     <span data-bind="css: ShowBakaLogo() ? 'd-flex' : 'd-none d-print-flex'"
           class="py-3 pr-lg-4 bk-system-baka float-right align-items-center ml-auto">
-        Provozov&#225;no na syst&#233;mu
+        Provozováno na systému
         <img src="/bakaweb/next/images/logos/bakalari-logo.svg" width="109" height="22" />
     </span>
 </div>

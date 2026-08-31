@@ -9,6 +9,8 @@
       systems = [
         "x86_64-linux"
         "aarch64-linux"
+        "x86_64-darwin"
+        "aarch64-darwin"
       ];
       forEachSystem = nixpkgs.lib.genAttrs systems;
     in
@@ -36,7 +38,10 @@
         in
         {
           default = pkgs.mkShell {
-            packages = with pkgs; [
+            packages = [
+              self.packages.${system}.bakasync
+            ]
+            ++ (with pkgs; [
               cargo
               rustc
               clippy
@@ -44,7 +49,7 @@
               rust-analyzer
               lefthook
               nixfmt-rfc-style
-            ];
+            ]);
           };
         }
       );

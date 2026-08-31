@@ -1,0 +1,153 @@
+name: release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    name: ${{ matrix.target }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: x86_64-unknown-linux-musl
+            os: ubuntu-24.04
+          - target: aarch64-unknown-linux-musl
+            os: ubuntu-24.04-arm
+          - target: aarch64-apple-darwin
+            os: macos-15
+          - target: x86_64-apple-darwin
+            os: macos-15
+          - target: x86_64-pc-windows-msvc
+            os: windows-2025
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: version
+        shell: bash
+        run: |
+          version=$(sed -n 's/^version = "\(.*\)"$/\1/p' Cargo.toml | head -1)
+          tag=${GITHUB_REF_NAME#v}
+          if [ "$version" != "$tag" ]; then
+            echo "Cargo.toml says $version but the tag is $tag" >&2
+            exit 1
+          fi
+          echo "version=$version" >> "$GITHUB_ENV"
+
+      - name: toolchain
+        shell: bash
+        run: rustup target add ${{ matrix.target }}
+
+      - name: musl
+        if: endsWith(matrix.target, '-musl')
+        shell: bash
+        env:
+          TARGET: ${{ matrix.target }}
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y musl-tools
+          echo "CC_$(echo "$TARGET" | tr - _)=musl-gcc" >> "$GITHUB_ENV"
+          echo "CARGO_TARGET_$(echo "$TARGET" | tr 'a-z-' 'A-Z_')_LINKER=musl-gcc" >> "$GITHUB_ENV"
+
+      - name: nasm
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          choco install nasm -y --no-progress
+          echo "C:\Program Files\NASM" >> $env:GITHUB_PATH
+
+      - name: test
+        if: matrix.target != 'x86_64-apple-darwin'
+        run: cargo test --locked --target ${{ matrix.target }}
+
+      - name: build
+        run: cargo build --release --locked --target ${{ matrix.target }}
+
+      - name: package
+        shell: bash
+        run: |
+          name="bakasync-${version}-${{ matrix.target }}"
+          mkdir -p "dist/$name"
+          cp README.md LICENSE .env.example "dist/$name/"
+          if [ "$RUNNER_OS" = "Windows" ]; then
+            cp "target/${{ matrix.target }}/release/bakasync.exe" "dist/$name/"
+            (cd dist && 7z a -bso0 "$name.zip" "$name")
+          else
+            cp "target/${{ matrix.target }}/release/bakasync" "dist/$name/"
+            (cd dist && tar czf "$name.tar.gz" "$name")
+          fi
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.target }}
+          if-no-files-found: error
+          path: |
+            dist/*.tar.gz
+            dist/*.zip
+
+  release:
+    needs: build
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+
+      - name: checksums
+        run: cd dist && sha256sum -- *.tar.gz *.zip > SHA256SUMS
+
+      - name: publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" dist/* --title "$GITHUB_REF_NAME" --generate-notes
+
+  packaging:
+    needs: release
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+
+      - name: render
+        run: packaging/render.sh "${GITHUB_REF_NAME#v}" dist
+
+      - name: commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add Formula/bakasync.rb bucket/bakasync.json
+          git diff --cached --quiet || git commit -m "packaging: $GITHUB_REF_NAME"
+          git push
+
+      - name: tap
+        if: vars.HOMEBREW_TAP != ''
+        env:
+          GH_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
+        run: |
+          gh repo clone "${{ vars.HOMEBREW_TAP }}" tap -- --depth 1
+          mkdir -p tap/Formula
+          cp Formula/bakasync.rb tap/Formula/bakasync.rb
+          cd tap
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add Formula/bakasync.rb
+          git diff --cached --quiet || git commit -m "bakasync $GITHUB_REF_NAME"
+          git push
