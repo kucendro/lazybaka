@@ -56,7 +56,7 @@ class Bakasync < Formula
   end
 
   test do
-    assert_match "BAKASYNC_CLASS_ID is not set", shell_output("#{bin}/bakasync 2>&1", 1)
+    assert_match "BAKASYNC_BASE_URL is not set", shell_output("#{bin}/bakasync 2>&1", 1)
   end
 end
 RUBY
