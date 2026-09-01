@@ -12,7 +12,8 @@ Calendar.</samp>
 macOS and Linux:
 
 ```console
-$ brew install kucendro/tap/bakasync
+$ brew tap kucendro/lazybaka https://github.com/kucendro/lazybaka
+$ brew install bakasync
 ```
 
 Windows:
@@ -142,6 +143,7 @@ stick. Use `cargo run` while iterating — the shell's copy only rebuilds when y
 it in this directory picks up `.env`, so reach for `--plan` rather than a bare `bakasync`.
 
 Pushing a `vX.Y.Z` tag that matches `Cargo.toml` builds all five targets, publishes the release and
-rewrites `Formula/bakasync.rb` and `bucket/bakasync.json`. `brew install kucendro/tap/bakasync` needs
-a `kucendro/homebrew-tap` repository; point the `HOMEBREW_TAP` variable and `HOMEBREW_TAP_TOKEN`
-secret at it and the workflow keeps it in step.
+commits `Formula/bakasync.rb` and `bucket/bakasync.json` to `main`. Those two files are what make
+this repository both a Homebrew tap and a Scoop bucket, so there is nothing else to publish and
+nothing to keep in step. Homebrew reads the formula from the default branch, so an install only
+resolves once a tag has run.

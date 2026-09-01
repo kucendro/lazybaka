@@ -4,8 +4,6 @@
 
 - [ ] Tag `v0.1.0` and confirm the release workflow on the three untested targets: musl, Windows
       (NASM), and the cross-built Intel mac. All three are `aws-lc-rs` C builds.
-- [ ] Create `kucendro/homebrew-tap`, set the `HOMEBREW_TAP` variable and `HOMEBREW_TAP_TOKEN`
-      secret, so `brew install kucendro/tap/bakasync` resolves.
 - [ ] `bakasync status --json` — last run, next run, lessons synced, last error. One line of state,
       readable by a status bar or `watch`. Needs somewhere to keep it: `$XDG_STATE_HOME/bakasync`
       for a user install, `StateDirectory` for the systemd unit.
