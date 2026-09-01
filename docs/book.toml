@@ -1,0 +1,13 @@
+[book]
+title = "bakasync"
+description = "One-way sync from a public Bakalari timetable into a dedicated Google Calendar"
+authors = ["kucendro"]
+language = "en"
+src = "src"
+
+[output.html]
+site-url = "/lazybaka/"
+git-repository-url = "https://github.com/kucendro/lazybaka"
+edit-url-template = "https://github.com/kucendro/lazybaka/edit/main/docs/{path}"
+default-theme = "light"
+preferred-dark-theme = "navy"

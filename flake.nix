@@ -49,6 +49,7 @@
               rust-analyzer
               lefthook
               nixfmt-rfc-style
+              mdbook
             ]);
           };
         }
