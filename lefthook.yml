@@ -20,7 +20,7 @@ pre-push:
       run: cargo test
     - name: no-real-host
       run: |
-        if git grep -nIE '//bakalari\.[a-z0-9-]+\.[a-z]{2,}' -- . ':!lefthook.yml' | grep -v example; then
+        if git grep -nIE '//bakalari\.[a-z0-9-]+\.[a-z]{2,}' -- . | grep -v example; then
           echo "a real Bakalari host is committed, keep it in .env.local instead" >&2
           exit 1
         fi

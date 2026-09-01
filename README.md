@@ -3,6 +3,9 @@
 <samp>One-way sync from a public Bakaláři timetable into a dedicated Google
 Calendar.</samp>
 
+[![ci](https://github.com/kucendro/lazybaka/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/kucendro/lazybaka/actions/workflows/ci.yml)
+[![release](https://github.com/kucendro/lazybaka/actions/workflows/release.yml/badge.svg)](https://github.com/kucendro/lazybaka/actions/workflows/release.yml)
+
 <br clear="left">
 
 ---
