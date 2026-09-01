@@ -1,3 +1,4 @@
+mod cli;
 mod config;
 mod gcal;
 mod sync;
@@ -5,6 +6,8 @@ mod timetable;
 
 use anyhow::{Context, Result};
 use chrono::{Duration as Delta, NaiveDate, Utc};
+use clap::Parser;
+use cli::{Cli, Command};
 use config::Config;
 use std::path::Path;
 use std::process::ExitCode;
@@ -13,33 +16,54 @@ use timetable::{Lesson, TZ};
 use tracing::{error, info, warn};
 use tracing_subscriber::EnvFilter;
 
-const AGENT: &str = concat!("bakasync/", env!("CARGO_PKG_VERSION"));
+pub const AGENT: &str = concat!("bakasync/", env!("CARGO_PKG_VERSION"));
 
 #[tokio::main]
 async fn main() -> ExitCode {
-    if let Err(error) = load_env() {
-        eprintln!("bakasync: {error:#}");
-        return ExitCode::FAILURE;
+    let cli = Cli::parse();
+    if let Some(Command::Init) = cli.command {
+        return finish(cli::init(cli.config.as_deref()));
     }
-    tracing_subscriber::fmt()
-        .with_env_filter(
-            EnvFilter::try_from_default_env().unwrap_or_else(|_| EnvFilter::new("info")),
-        )
-        .with_target(false)
-        .init();
-    let config = match Config::from_env() {
+    let located = match config::locate(cli.config.as_deref()) {
+        Ok(located) => located,
+        Err(error) => {
+            eprintln!("bakasync: {error:#}");
+            return ExitCode::FAILURE;
+        }
+    };
+    logging(if cli.command.is_some() || cli.plan {
+        "warn"
+    } else {
+        "info"
+    });
+    if let Some(Command::Doctor) = cli.command {
+        return match cli::doctor(&located).await {
+            Ok(true) => ExitCode::SUCCESS,
+            Ok(false) => ExitCode::FAILURE,
+            Err(error) => {
+                eprintln!("bakasync: {error:#}");
+                ExitCode::FAILURE
+            }
+        };
+    }
+    let config = match Config::from_env(&located) {
         Ok(config) => config,
         Err(error) => {
             error!("configuration: {error:#}");
             return ExitCode::FAILURE;
         }
     };
+    let interval = if cli.once || cli.plan {
+        None
+    } else {
+        config.interval
+    };
     loop {
-        let outcome = run(&config).await;
+        let outcome = run(&config, cli.plan).await;
         if let Err(error) = &outcome {
             error!("run failed: {error:#}");
         }
-        match config.interval {
+        match interval {
             Some(interval) => {
                 info!("next run in {}", humantime::format_duration(interval));
                 tokio::time::sleep(interval).await;
@@ -50,7 +74,26 @@ async fn main() -> ExitCode {
     }
 }
 
-async fn run(config: &Config) -> Result<()> {
+fn finish(outcome: Result<()>) -> ExitCode {
+    match outcome {
+        Ok(()) => ExitCode::SUCCESS,
+        Err(error) => {
+            eprintln!("bakasync: {error:#}");
+            ExitCode::FAILURE
+        }
+    }
+}
+
+fn logging(default: &str) {
+    tracing_subscriber::fmt()
+        .with_env_filter(
+            EnvFilter::try_from_default_env().unwrap_or_else(|_| EnvFilter::new(default)),
+        )
+        .with_target(false)
+        .init();
+}
+
+async fn run(config: &Config, plan_only: bool) -> Result<()> {
     let http = reqwest::Client::builder()
         .user_agent(AGENT)
         .timeout(Duration::from_secs(30))
@@ -133,6 +176,10 @@ async fn run(config: &Config) -> Result<()> {
         plan.patches.len(),
         plan.deletes.len()
     );
+    if plan_only {
+        cli::print_plan(&plan, &existing);
+        return Ok(());
+    }
     if plan.is_empty() {
         info!("gcal: already up to date");
         return Ok(());
@@ -143,7 +190,7 @@ async fn run(config: &Config) -> Result<()> {
     Ok(())
 }
 
-async fn fetch(http: &reqwest::Client, url: &str) -> Result<String> {
+pub async fn fetch(http: &reqwest::Client, url: &str) -> Result<String> {
     let response = http
         .get(url)
         .send()
@@ -195,17 +242,4 @@ fn window(days: &[NaiveDate]) -> Option<(String, String)> {
     let from = sync::rfc3339(first.and_hms_opt(0, 0, 0)?);
     let to = sync::rfc3339((*last + Delta::days(1)).and_hms_opt(0, 0, 0)?);
     Some((from, to))
-}
-
-fn load_env() -> Result<()> {
-    match std::env::var("BAKASYNC_ENV_FILE") {
-        Ok(path) if !path.trim().is_empty() => {
-            dotenvy::from_path(path.trim()).with_context(|| format!("loading env file {path}"))?;
-        }
-        _ => {
-            let _ = dotenvy::from_filename(".env.local");
-            let _ = dotenvy::dotenv();
-        }
-    }
-    Ok(())
 }

@@ -2,35 +2,13 @@
 
 ## Next
 
-- [ ] `--plan` and `--once` flags. `bakasync` ignores argv today, so running it by hand in the repo
-      picks up `.env` and starts syncing for real on the interval. There is no way to say *show me
-      the diff and stop*, which is exactly what you want while testing locally.
-- [ ] `bakasync status --json` — last run, next run, lessons synced, last error. One line of state,
-      readable by a status bar or `watch`.
 - [ ] Tag `v0.1.0` and confirm the release workflow on the three untested targets: musl, Windows
       (NASM), and the cross-built Intel mac. All three are `aws-lc-rs` C builds.
 - [ ] Create `kucendro/homebrew-tap`, set the `HOMEBREW_TAP` variable and `HOMEBREW_TAP_TOKEN`
       secret, so `brew install kucendro/tap/bakasync` resolves.
-- [ ] Decide whether `bakasync-spec.md` belongs in a public repo. It is a design doc, now
-      school-free, but the README already covers everything a user needs.
-
-## Think about
-
-### Where does a packaged install read its config from?
-
-`brew install bakasync` / `scoop install bakasync` puts the binary on `PATH`, but `dotenvy` only
-looks in the *current* directory. Someone running `bakasync` from their home directory has no
-config file — their only options today are exporting the variables by hand or setting
-`BAKASYNC_ENV_FILE`. Neither is discoverable from a package.
-
-Likely answer: fall back to a per-user config after the working directory, so the chain becomes
-`BAKASYNC_ENV_FILE` → `./.env.local` → `./.env` → `$XDG_CONFIG_HOME/bakasync/config.env` (
-`~/.config/bakasync/config.env`, `%APPDATA%\bakasync\config.env` on Windows). Then the Homebrew
-formula can print a caveat with that path and `.env.example` has somewhere to be copied to.
-
-Open: whether the per-user file should merge with a working-directory `.env` or be ignored when one
-is present. Merging is the usual dotenv behaviour but means a stray `.env` in some unrelated
-directory silently contributes variables.
+- [ ] `bakasync status --json` — last run, next run, lessons synced, last error. One line of state,
+      readable by a status bar or `watch`. Needs somewhere to keep it: `$XDG_STATE_HOME/bakasync`
+      for a user install, `StateDirectory` for the systemd unit.
 
 ## Maybe
 
@@ -38,6 +16,8 @@ directory silently contributes variables.
       Only worth writing once someone actually runs it there.
 - [ ] Retry/backoff tuning — the Google client retries 4 times; nothing has failed yet to justify
       more.
+- [ ] `doctor` proves the calendar is readable, not writable — a read-only share still passes. Only
+      an insert would prove it, and that leaves an event behind, so `--plan` covers the gap instead.
 
 ## Open questions
 
@@ -52,9 +32,9 @@ It also costs more than it looks: `ratatui` + `crossterm`, an event loop, and a 
 that has to keep up with every change to the sync logic — for a screen that gets looked at roughly
 never.
 
-The two things a UI would actually be for are worth building *without* a TUI:
+The two things a UI would actually be for are better off without one:
 
-1. **See the diff before it lands** → `--plan`, which prints the insert/patch/delete list and exits.
+1. **See the diff before it lands** → `--plan`, which is now in.
 2. **Know it is alive** → `status --json`, which anything can consume.
 
 Revisit only if a real habit of watching it live shows up.

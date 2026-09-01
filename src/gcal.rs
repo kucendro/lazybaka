@@ -98,14 +98,10 @@ pub struct Calendar {
 
 impl Calendar {
     pub fn new(http: Client, calendar_id: String, key_path: &Path) -> Result<Self> {
-        let raw = std::fs::read_to_string(key_path)
-            .with_context(|| format!("reading service account key {}", key_path.display()))?;
-        let account: ServiceAccount = serde_json::from_str(&raw)
-            .with_context(|| format!("parsing service account key {}", key_path.display()))?;
         Ok(Calendar {
             http,
             calendar_id,
-            account,
+            account: load_account(key_path)?,
             token: None,
         })
     }
@@ -210,10 +206,21 @@ impl Calendar {
     }
 }
 
+fn load_account(path: &Path) -> Result<ServiceAccount> {
+    let raw = std::fs::read_to_string(path)
+        .with_context(|| format!("reading service account key {}", path.display()))?;
+    serde_json::from_str(&raw)
+        .with_context(|| format!("parsing service account key {}", path.display()))
+}
+
+pub fn key_owner(path: &Path) -> Result<String> {
+    Ok(load_account(path)?.client_email)
+}
+
 #[derive(Debug)]
-struct ApiError {
-    status: StatusCode,
-    body: String,
+pub struct ApiError {
+    pub status: StatusCode,
+    pub body: String,
 }
 
 impl std::fmt::Display for ApiError {

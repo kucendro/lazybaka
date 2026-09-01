@@ -7,6 +7,7 @@ rustPlatform.buildRustPackage {
   src = lib.fileset.toSource {
     root = ../.;
     fileset = lib.fileset.unions [
+      ../.env.example
       ../Cargo.toml
       ../Cargo.lock
       ../src

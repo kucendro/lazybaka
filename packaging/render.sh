@@ -55,6 +55,14 @@ class Bakasync < Formula
     pkgshare.install ".env.example"
   end
 
+  def caveats
+    <<~EOS
+      Run \`bakasync init\` to write ~/.config/bakasync/config.env, put the
+      Google service account key next to it as service-account.json, then
+      check the setup with \`bakasync doctor\`.
+    EOS
+  end
+
   test do
     assert_match "BAKASYNC_BASE_URL is not set", shell_output("#{bin}/bakasync 2>&1", 1)
   end
