@@ -5,6 +5,7 @@ Calendar.</samp>
 
 [![ci](https://github.com/kucendro/lazybaka/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/kucendro/lazybaka/actions/workflows/ci.yml)
 [![release](https://github.com/kucendro/lazybaka/actions/workflows/release.yml/badge.svg)](https://github.com/kucendro/lazybaka/actions/workflows/release.yml)
+[![publish](https://github.com/kucendro/lazybaka/actions/workflows/publish.yml/badge.svg)](https://github.com/kucendro/lazybaka/actions/workflows/publish.yml)
 
 <br clear="left">
 
