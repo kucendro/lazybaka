@@ -18,15 +18,15 @@ Documentation: **<https://kucendro.github.io/lazybaka/>**
 macOS and Linux:
 
 ```console
-$ brew tap kucendro/lazybaka https://github.com/kucendro/lazybaka
-$ brew install bakasync
+brew tap kucendro/lazybaka https://github.com/kucendro/lazybaka
+brew install bakasync
 ```
 
 Windows:
 
 ```console
-$ scoop bucket add lazybaka https://github.com/kucendro/lazybaka
-$ scoop install bakasync
+scoop bucket add lazybaka https://github.com/kucendro/lazybaka
+scoop install bakasync
 ```
 
 Anything else: [Releases](https://github.com/kucendro/lazybaka/releases). Static binary,
@@ -67,10 +67,10 @@ BAKASYNC_CALENDAR_ID=abc123@group.calendar.google.com
 ## Run
 
 ```console
-$ bakasync doctor    # check config, key, timetable, calendar
-$ bakasync --plan    # print what the next sync would change, write nothing
-$ bakasync --once    # sync once, ignore the interval
-$ bakasync           # sync on BAKASYNC_INTERVAL, or once if unset
+bakasync doctor    # check config, key, timetable, calendar
+bakasync --plan    # print what the next sync would change, write nothing
+bakasync --once    # sync once, ignore the interval
+bakasync           # sync on BAKASYNC_INTERVAL, or once if unset
 ```
 
 `doctor` and `--plan` never write. Set `BAKASYNC_INTERVAL=10min` to leave it running.
@@ -81,10 +81,10 @@ you added by hand survives.
 ## Development
 
 ```console
-$ nix develop
-$ cargo test
-$ nix build .#bakasync
-$ mdbook serve docs --open
+nix develop
+cargo test
+nix build .#bakasync
+mdbook serve docs --open
 ```
 
 `lefthook` runs fmt, clippy, the test suite and the host guard on `pre-push`, and CI runs the same
@@ -92,3 +92,7 @@ four. Push a `vX.Y.Z` tag matching `Cargo.toml` to build the five release target
 Homebrew formula and Scoop manifest on `main`.
 
 More in the [docs](https://kucendro.github.io/lazybaka/development.html).
+
+---
+
+<a href="https://www.buymeacoffee.com/kucendro"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a matcha&emoji=&slug=kucendro&button_colour=5f5ca7&font_colour=ffffff&font_family=Cookie&outline_colour=ffffff&coffee_colour=FFDD00" /></a>
