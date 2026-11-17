@@ -1,4 +1,4 @@
-<img src="assets/lazybaka.png" align="left" width="260">
+<picture><source media="(prefers-color-scheme: dark)" srcset="assets/lazybaka.png"><img src="assets/lazybaka-light.png" align="left" width="260"></picture>
 
 <samp>One-way sync from a public Bakaláři timetable into a dedicated Google
 Calendar.</samp>

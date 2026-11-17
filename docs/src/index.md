@@ -1,4 +1,4 @@
-<img src="assets/lazybaka.png" alt="" width="220" align="right">
+<picture><source media="(prefers-color-scheme: dark)" srcset="assets/lazybaka.png"><img src="assets/lazybaka-light.png" alt="" width="220" align="right"></picture>
 
 # bakasync
 
