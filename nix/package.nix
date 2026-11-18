@@ -1,4 +1,9 @@
-{ lib, rustPlatform }:
+{
+  lib,
+  rustPlatform,
+  pkg-config,
+  aws-lc,
+}:
 
 rustPlatform.buildRustPackage {
   pname = "bakasync";
@@ -16,6 +21,9 @@ rustPlatform.buildRustPackage {
   };
 
   cargoLock.lockFile = ../Cargo.lock;
+
+  nativeBuildInputs = [ pkg-config ];
+  buildInputs = [ aws-lc ];
 
   meta = {
     description = "One-way sync from a public Bakalari timetable to a dedicated Google Calendar";
